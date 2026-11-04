@@ -43,7 +43,7 @@ interface AppLayoutProps {
   /** Fades the footer in once it scrolls into view (Omni-Bar gateway). */
   revealFooter?: boolean;
   /** "obsidian" renders the whole frame (header, page, footer) in the dark palette. */
-  tone?: "default" | "obsidian";
+  tone?: "default" | "obsidian" | "infrastructure";
 }
 
 /**
@@ -121,7 +121,7 @@ export function AppLayout({
   );
   if (Frame) return <Frame heading={heading} width={width}>{children}</Frame>;
   return (
-    <div className={cn("flex min-h-screen flex-col bg-background pb-[env(safe-area-inset-bottom)] text-foreground", tone === "obsidian" && "dark")}>
+    <div className={cn("flex min-h-screen flex-col bg-background pb-[env(safe-area-inset-bottom)] text-foreground", tone !== "default" && "dark", tone === "infrastructure" && "infra-home")}>
       <header
         data-testid="app-header"
         data-hidden={hidden ? "true" : "false"}
@@ -142,8 +142,8 @@ export function AppLayout({
             <Link to="/explore" className="hidden px-2 text-sm text-muted-foreground hover:text-foreground sm:inline">
               {t("explore.crumb")}
             </Link>
-            <LanguageToggle className="hidden sm:inline-flex" />
             <HeaderControls>
+              <LanguageToggle className="hidden sm:inline-flex" />
               <InviteButton />
               <ProfileMenu />
               <MobileMenu />
