@@ -31,7 +31,7 @@ import { parseOmniInput, type OmniIntent } from "@/lib/omni-parser";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { useTypingPlaceholder } from "@/hooks/useTypingPlaceholder";
-import routingStage from "@/assets/rout-routing-stage.jpg";
+import { SovereignVisual } from "@/components/gateway/SovereignVisual";
 import everydayImage from "@/assets/rout-qr-everyday.jpg";
 import { ProfileScene, QrScene, AnalyticsScene, SocialScene, WorkspaceScene, DeveloperScene } from "@/components/gateway/StoryVisuals";
 import { IdentityVisual, WalletVisual, CommerceVisual, IntegrationMesh } from "@/components/gateway/InfrastructureVisuals";
@@ -120,7 +120,7 @@ export default function Gateway() {
   return (
     <AppLayout width="full" revealFooter tone="infrastructure">
       <section className="infra-hero">
-        <img src={routingStage} alt="" width={1920} height={1024} fetchPriority="high" className="infra-hero-image" />
+        <SovereignVisual />
         <div className="infra-hero-content mx-auto flex max-w-6xl flex-col items-start px-6 py-8 sm:px-10 sm:py-10">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t("gateway.kicker")}</p>
           <h1 className="infra-title mt-5 font-display text-6xl leading-[1.05] sm:text-7xl">
@@ -205,6 +205,7 @@ export default function Gateway() {
           </div>
 
         </div>
+        <div className="sovereign-domains" aria-hidden>{["identity", "wallet", "social", "analytics"].map(key => <span key={key}>{t(`story.${key}.short`)}</span>)}</div>
       </section>
 
       <section id="ecosystem" className="story-intro story-section scroll-mt-20">
@@ -219,7 +220,7 @@ export default function Gateway() {
       {CHAPTERS.map(({ key, to, Visual, points }, i) => <section key={key} id={`chapter-${key}`} className={`story-section story-chapter story-chapter-${key}`}>
         <Reveal className="story-inner">
           <div className="story-chapter-heading"><div className="story-chapter-number" aria-hidden>0{i + 1}</div><div><p className="story-small-label">ROUT / {t(`story.${key}.short`)}</p><h2 className="story-heading mt-5">{t(`story.${key}.title`)}</h2><p className="story-prose mt-6">{t(`story.${key}.text`)}</p><Button asChild variant="outline" className="mt-7 gap-3"><Link to={to}>{t(`story.${key}.cta`)}<ArrowUpRight className="h-4 w-4" /></Link></Button></div></div>
-          {key === "wallet" && <div className="story-card-photograph"><img src={infrastructureImage} width={1920} height={1024} loading="lazy" alt={t("infra.cardPreview")} /></div>}
+          {key === "wallet" && <div className="story-card-photograph"><img src={infrastructureImage} width={1920} height={1024} loading="lazy" alt={t("infra.cardPreview")} /><div className="story-card-copy"><p className="story-small-label">ROUT / PASS</p><h3>{t("story.wallet.point1.title")}</h3><p>{t("story.wallet.text")}</p><Button asChild variant="outline"><Link to={to}>{t("story.wallet.cta")}<ArrowUpRight /></Link></Button></div></div>}
           <div className="story-product-stage"><Visual /></div>
           <div className="story-feature-rows">{Array.from({ length: points }, (_, j) => <div key={j}><span className="font-mono text-xs text-primary">0{j + 1}</span><h3>{t(`story.${key}.point${j + 1}.title`)}</h3><p>{t(`story.${key}.point${j + 1}.text`)}</p></div>)}</div>
         </Reveal>
