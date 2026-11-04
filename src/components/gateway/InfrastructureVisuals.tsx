@@ -23,7 +23,9 @@ export function WalletVisual() {
   useEffect(() => {
     let cancelled = false;
     void import("@/components/wallet/card-faces").then(async ({ drawCardFaces }) => {
-      const style = getComputedStyle(document.documentElement);
+      const surface = canvasRef.current?.closest(".infra-home");
+      if (!surface || cancelled) return;
+      const style = getComputedStyle(surface);
       const faces = await drawCardFaces({ serial: "public-preview", handle: "rout", space: "root", displayName: "ROUT", subheader: "Sovereign Digital Identity", url: "https://rout.be", qrValue: "https://rout.be", sovereignId: "ROUT · PREVIEW", hexBackgroundColor: style.getPropertyValue("--infra-card-base").trim(), hexForegroundColor: style.getPropertyValue("--infra-card-ink").trim() });
       const canvas = canvasRef.current;
       if (!canvas || cancelled) return;

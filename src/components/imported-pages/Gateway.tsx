@@ -115,7 +115,7 @@ export default function Gateway() {
     <AppLayout width="full" revealFooter tone="infrastructure">
       <section className="infra-hero">
         <img src={infrastructureImage} alt="" width={1920} height={1024} fetchPriority="high" className="infra-hero-image" />
-        <div className="infra-hero-content mx-auto flex max-w-6xl flex-col items-start px-4 py-12 sm:px-6 sm:py-16">
+        <div className="infra-hero-content mx-auto flex max-w-6xl flex-col items-start px-4 py-8 sm:px-6 sm:py-10">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t("gateway.kicker")}</p>
           <h1 className="infra-title mt-5 font-display text-4xl leading-[1.05] sm:text-6xl">
             ROUT
