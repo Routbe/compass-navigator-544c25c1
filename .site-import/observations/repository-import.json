@@ -5,5 +5,11 @@
   "credentialsCopied": false,
   "databaseMigrationsApplied": false,
   "sourceWebsiteComparison": "not applicable: source repository supplied, not a deployed website",
-  "checks": []
+  "checks": {
+    "publicNavigation": "desktop and phone passed",
+    "qrGeneration": "real URL rendered on desktop and phone",
+    "tests": "23 passed",
+    "build": "OK",
+    "accountsAndData": "unverified; original service configuration not connected"
+  }
 }
