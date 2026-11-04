@@ -6,6 +6,7 @@
  * het sticky voorbeeld live meebeweegt.
  */
 import { SlidersHorizontal } from "lucide-react";
+import { TITLE_EFFECTS, TITLE_ENTRANCES } from "@/lib/title-typography";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -598,6 +599,17 @@ export function DesignButtonsTypographySection({
           <div className="space-y-1.5"><p className="input-label">Titelgrootte ({prefs.titleScale}%)</p><Slider value={[prefs.titleScale]} min={80} max={180} step={5} onValueChange={([v]) => setPref("titleScale", v ?? 100)} /></div>
           <div className="space-y-1.5"><p className="input-label">Letterafstand ({prefs.titleLetterSpacing}px)</p><Slider value={[prefs.titleLetterSpacing]} min={-1} max={12} step={1} onValueChange={([v]) => setPref("titleLetterSpacing", v ?? 0)} /></div>
           <div className="space-y-1.5"><p className="input-label">Tekstgloed ({prefs.titleGlow}px)</p><Slider value={[prefs.titleGlow]} min={0} max={40} step={2} onValueChange={([v]) => setPref("titleGlow", v ?? 0)} /></div>
+          <label className="flex items-center justify-between gap-3 text-xs"><span>Gradient Mode</span><Switch aria-label="Gradient Mode" checked={Boolean(prefs.titleGradientTo)} onCheckedChange={(on) => setPref("titleGradientTo", on ? (prefs.titleColor ?? t.text) : null)} /></label>
+          {prefs.titleGradientTo && <ColorField label="Eindkleur" value={prefs.titleGradientTo} onChange={(v) => setPref("titleGradientTo", v)} placeholder={t.text} />}
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5"><p className="input-label">Schaduwvervaging ({prefs.titleShadowBlur}px)</p><Slider aria-label="Schaduwvervaging" value={[prefs.titleShadowBlur]} min={0} max={40} step={1} onValueChange={([v]) => setPref("titleShadowBlur", v ?? 0)} /></div>
+            <ColorField label="Schaduwkleur" value={prefs.titleShadowColor} onChange={(v) => setPref("titleShadowColor", v)} />
+            <div className="space-y-1.5"><p className="input-label">Schaduw X ({prefs.titleShadowX}px)</p><Slider aria-label="Schaduw X" value={[prefs.titleShadowX]} min={-20} max={20} step={1} onValueChange={([v]) => setPref("titleShadowX", v ?? 0)} /></div>
+            <div className="space-y-1.5"><p className="input-label">Schaduw Y ({prefs.titleShadowY}px)</p><Slider aria-label="Schaduw Y" value={[prefs.titleShadowY]} min={-20} max={20} step={1} onValueChange={([v]) => setPref("titleShadowY", v ?? 0)} /></div>
+            <label className="space-y-1.5"><span className="input-label">Elementair Effect</span><Select value={prefs.titleEffect} onValueChange={(v) => setPref("titleEffect", v as ProfileDisplayPrefs["titleEffect"])}><SelectTrigger aria-label="Elementair Effect"><SelectValue /></SelectTrigger><SelectContent>{TITLE_EFFECTS.map((fx) => <SelectItem key={fx.id} value={fx.id}>{fx.label}</SelectItem>)}</SelectContent></Select></label>
+            <label className="space-y-1.5"><span className="input-label">Verschijningsvorm</span><Select value={prefs.titleEntrance} onValueChange={(v) => setPref("titleEntrance", v as ProfileDisplayPrefs["titleEntrance"])}><SelectTrigger aria-label="Verschijningsvorm"><SelectValue /></SelectTrigger><SelectContent>{TITLE_ENTRANCES.map((fx) => <SelectItem key={fx.id} value={fx.id}>{fx.label}</SelectItem>)}</SelectContent></Select></label>
+          </div>
+          <div className="space-y-1.5"><p className="input-label">Zichtbaarheid ({prefs.titleReveal}%)</p><Slider aria-label="Tekstzichtbaarheid" value={[prefs.titleReveal]} min={0} max={100} step={1} onValueChange={([v]) => setPref("titleReveal", v ?? 100)} /></div>
           <div className="grid gap-3 sm:grid-cols-2">
             <ColorField label="Titelkleur" value={prefs.titleColor} onChange={(v) => setPref("titleColor", v)} placeholder={t.text} />
             <ColorField label="Knoptekstkleur" value={prefs.buttonTextColor} onChange={(v) => setPref("buttonTextColor", v)} placeholder={t.text} />

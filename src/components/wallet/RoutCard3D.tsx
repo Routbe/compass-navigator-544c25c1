@@ -338,7 +338,7 @@ function Card({ faces, finish, pbr, flipped, tilt, live, zoom, secure, onFlip, d
   const slotY = qy + qrSize + 80 + 40;
 
   return (
-    <group ref={group} onClick={(e) => { e.stopPropagation(); if (e.delta < 6 && zoom.current <= 0.02) onFlip(); }}>
+    <group name="rout-card-body" ref={group} onClick={(e) => { e.stopPropagation(); if (e.delta < 6 && zoom.current <= 0.02) onFlip(); }}>
       <mesh geometry={body}>
         <meshPhysicalMaterial color="#26262b" metalness={0.95} roughness={0.32} clearcoat={0.4} />
       </mesh>
@@ -394,7 +394,24 @@ function ReadySignal({ onReady, glyphs }: { onReady: () => void; glyphs: Mutable
 function SnapshotBridge({ snapshotRef }: { snapshotRef: MutableRefObject<(() => string) | null> }) {
   const { gl, scene, camera } = useThree();
   useEffect(() => {
-    snapshotRef.current = () => captureCardSnapshot(gl, scene, camera);
+    snapshotRef.current = () => {
+      const card = scene.getObjectByName("rout-card-body");
+      if (!card) throw new Error("Card not ready");
+      const rotation = card.rotation.clone(), position = card.position.clone();
+      const cameraPosition = camera.position.clone(), cameraRotation = camera.quaternion.clone();
+      try {
+        // Static front only: never export the private, rotating code on the back.
+        card.rotation.set(0, 0, 0);
+        card.position.set(0, 0, 0);
+        camera.position.set(0, 0, CAMERA_FAR);
+        camera.lookAt(0, 0, 0);
+        return captureCardSnapshot(gl, scene, camera);
+      } finally {
+        card.rotation.copy(rotation); card.position.copy(position);
+        camera.position.copy(cameraPosition); camera.quaternion.copy(cameraRotation);
+        gl.render(scene, camera);
+      }
+    };
     return () => { snapshotRef.current = null; };
   }, [gl, scene, camera, snapshotRef]);
   return null;
