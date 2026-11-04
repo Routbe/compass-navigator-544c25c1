@@ -1,3 +1,4 @@
+import { SpatialChoice } from "@/components/ui/spatial-choice";
 import { StudioToggleCard } from "@/components/studio/StudioToggleCard";
 import { useI18n } from "@/lib/i18n";
 import { FeedbackPanel } from "@/components/studio/FeedbackPanel";
@@ -979,7 +980,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
       {/* Compacte studiokop: tier-balk en tabs blijven bij het scrollen staan en
           nemen samen nauwelijks hoogte in, zodat de live preview hoger begint. */}
       {/* RIJ 1 — profielstatus & URL-balk */}
-      <div className="flex min-w-0 max-w-full items-center gap-3 overflow-hidden rounded-2xl border border-border bg-card/50 p-2 md:justify-between md:p-4">
+      <div className="flex min-w-0 max-w-full items-center gap-3 overflow-hidden acrylic-card p-2 md:justify-between md:p-4">
         <div className="hidden min-w-0 items-center gap-2 md:flex">
           <span
             className={cn(
@@ -1006,7 +1007,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
           >
             {live.label ?? `${host}${styledProfilePath(normalized || "handle", urlStyle)}`}
           </a>
-          <button
+          <Button variant="outline" size="icon"
             type="button"
             onClick={openHandleEditor}
             aria-label={t("studio.editor.editHandle")}
@@ -1017,10 +1018,10 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               className="h-3.5 w-3.5 text-muted-foreground transition-colors hover:text-foreground"
               aria-hidden
             />
-          </button>
+          </Button>
         </div>
         <div className="flex w-full min-w-0 flex-nowrap items-center gap-1.5 md:w-auto md:shrink-0 md:gap-2">
-          <button
+          <Button variant="outline" size="icon"
             type="button"
             onClick={undo}
             disabled={!canUndo}
@@ -1029,8 +1030,8 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
             className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border transition-colors hover:bg-muted disabled:opacity-40"
           >
             <Undo2 className="h-4 w-4" aria-hidden />
-          </button>
-          <button
+          </Button>
+          <Button variant="outline" size="icon"
             type="button"
             onClick={redo}
             disabled={!canRedo}
@@ -1039,15 +1040,15 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
             className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border transition-colors hover:bg-muted disabled:opacity-40"
           >
             <Redo2 className="h-4 w-4" aria-hidden />
-          </button>
-          <button
+          </Button>
+          <Button variant="outline" size="icon"
             type="button"
             onClick={openHandleEditor}
             aria-label={t("studio.editor.editHandle")}
             className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border hover:bg-muted md:hidden"
           >
             <Pencil className="h-4 w-4" aria-hidden />
-          </button>
+          </Button>
           <ShareMenu
             iconOnly
             className="md:hidden"
@@ -1061,14 +1062,14 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
           />
           <Dialog>
             <DialogTrigger asChild>
-              <button
+              <Button variant="outline" size="icon"
                 type="button"
                 aria-label="Mijn ontwerpen"
                 title="Mijn ontwerpen"
                 className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border transition-colors hover:bg-muted"
               >
                 <Save className="h-4 w-4" aria-hidden />
-              </button>
+              </Button>
             </DialogTrigger>
             <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
               <DialogHeader>
@@ -1087,14 +1088,14 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
           </a>
           <Popover>
             <PopoverTrigger asChild>
-              <button
+              <Button variant="outline" size="icon"
                 type="button"
                 aria-label={t("studio.editor.discard")}
                 disabled={discarding || publishing || saving || draftRevision === publishedRevision}
                 className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border transition-colors hover:bg-muted disabled:opacity-40 md:hidden"
               >
                 {discarding ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Trash2 className="h-4 w-4" aria-hidden />}
-              </button>
+              </Button>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-60 space-y-3 p-3">
               <p className="text-sm">{t("studio.editor.discardConfirm")}</p>
@@ -1147,36 +1148,9 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
       ) : (
       <>
       {/* RIJ 2 — hoofdnavigatie van de studio */}
-      <div
-        role="tablist"
-        aria-label="Studio"
-        className="sticky-tabbar top-14 flex w-full gap-1 overflow-x-auto p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {visibleTabs.map(({ id }) => (
-          <Button
-            variant="ghost"
-            key={id}
-            role="tab"
-            type="button"
-            data-tour={`studio-tab-${id}`}
-            aria-selected={tab === id}
-            title={t(`studio.tab.${id}`)}
-            onClick={(e) => {
-              setTab(id);
-              e.currentTarget.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-            }}
-            className={cn(
-              "flex h-9 flex-1 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-0 px-3 text-xs shadow-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              tab === id
-                ? "bg-foreground font-medium text-background hover:bg-foreground hover:text-background"
-                : "bg-transparent text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
-            )}
-          >
-            <StudioSectionIcon kind={id === "links" ? "content" : id} className="size-4 text-current" />
-            {t(`studio.tab.${id}`)}
-          </Button>
-        ))}
-      </div>
+      <SpatialChoice role="tablist" label="Studio" value={tab} onChange={setTab}
+        className="sticky top-14 z-30 w-full overflow-x-auto"
+        options={visibleTabs.map(({ id }) => ({ value: id, title: t(`studio.tab.${id}`), label: <><StudioSectionIcon kind={id === "links" ? "content" : id} className="size-4 text-current" />{t(`studio.tab.${id}`)}</> }))} />
 
       <div className="mt-6 grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
         <div className="min-w-0 space-y-6 lg:col-span-7">
@@ -1274,14 +1248,14 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               </p>
               <AccordionItem
                 value="advanced_settings"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="flex min-w-0 items-center gap-2 text-base font-medium"><StudioSectionIcon kind="settings" />{t("studio.editor.privacySharing")}</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
                   {/* Eén bron van waarheid: QR-styling gebeurt in de generator (Sociale profielhub). */}
-                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5" data-tour="studio-qr" data-qr-container>
+                  <section className="space-y-3 acrylic-card p-4 sm:p-5" data-tour="studio-qr" data-qr-container>
                     <h2 className="text-lg font-medium">{t("studio.editor.qr")}</h2>
                     <p className="text-sm text-muted-foreground">{t("studio.editor.qrHelp")}</p>
                     <a
@@ -1293,7 +1267,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                   </section>
 
                 {/* 🔒 Privacy & Openbaar Profiel */}
-                <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                <section className="space-y-3 acrylic-card p-4 sm:p-5">
                   <h2 className="text-lg font-medium">{t("studio.editor.privacy")}</h2>
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
@@ -1324,7 +1298,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                   </div>
                 </section>
 
-                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="space-y-3 acrylic-card p-4 sm:p-5">
                     <h2 className="text-lg font-medium">{t("studio.editor.share")}</h2>
                     <ShareInspector
                       space={isWorkspace ? "workspace" : variant === "alias" ? "alias" : "root"}
@@ -1387,7 +1361,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
           {tab === "analytics" && <FeedbackPanel handle={normalized || handle} space={alias ? "alias" : "root"} />}
           {tab === "analytics" && <EventsPanel handle={normalized || handle} space={alias ? "alias" : "root"} />}
           {tab === "analytics" && (
-            <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+            <section className="space-y-4 acrylic-card p-4 sm:p-5">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-lg font-medium">{t("studio.editor.analytics")}</h2>
                 <Select value={range} onValueChange={(v) => setRange(v as typeof range)}>
@@ -1558,13 +1532,13 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
             >
               <AccordionItem
                 value="billing"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">{t("studio.editor.billing")}</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="space-y-3 acrylic-card p-4 sm:p-5">
                     <h2 className="text-lg font-medium">{t("studio.editor.billingMethods")}</h2>
                     <p className="text-sm text-muted-foreground">
                       {t("studio.editor.billingHelp")}
@@ -1584,13 +1558,13 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
 
               <AccordionItem
                 value="data_domain"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">{t("studio.editor.data")}</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-                  <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="space-y-3 acrylic-card p-4 sm:p-5">
                     <h2 className="text-lg font-medium">{t("studio.editor.dataOwn")}</h2>
                     <p className="text-sm text-muted-foreground">
                       {t("studio.editor.dataHelp")}
@@ -1607,7 +1581,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
 
               <AccordionItem
                 value="seo_sharing"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">
@@ -1630,13 +1604,13 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               {!isWorkspace && (<>
               <AccordionItem
                 value="identity_badges"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">{t("studio.editor.identity")}</span>
                 </AccordionTrigger>
                 <AccordionContent className="space-y-4 pb-5">
-                  <section className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="acrylic-card p-4 sm:p-5">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="text-lg font-medium">
                         {isWorkspace
@@ -1752,7 +1726,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                       staat al bovenaan bij de profielkiezer, dus hier weg.
                       Persoonsgebonden (alias vs. wettelijke naam): nooit voor workspaces. */}
                   {verified && !isWorkspace && (
-                  <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="space-y-4 acrylic-card p-4 sm:p-5">
                     <div>
                       <h2 className="text-lg font-medium">{t("studio.editor.identityBadge")}</h2>
                       <p className="mt-1 text-xs text-muted-foreground">
@@ -1848,7 +1822,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
 
               <AccordionItem
                 value="badges"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">{t("studio.editor.badgeTitle")}</span>
@@ -1856,7 +1830,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                 <AccordionContent className="space-y-4 pb-5">
                   <VerifiedBadgeCard verified={verified} handle={handle || null} />
 
-                  <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                  <section className="space-y-4 acrylic-card p-4 sm:p-5">
                     <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-background/60 p-3">
                       <div className="min-w-0">
                         <p className="text-sm font-medium">{t("studio.editor.showBadge")}</p>
@@ -2025,7 +1999,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               {/* Steunpagina: enkel voor geverifieerde leden met een root-handle (server-side afgedwongen). */}
               <AccordionItem
                 value="support_page"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">{t("studio.editor.support")}</span>
@@ -2042,7 +2016,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
             isWorkspace ? (
               <div className="space-y-4">
                 {/* 1 — Waar de workspace woont: username, eigen domein, live adres. */}
-                <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                <section className="space-y-4 acrylic-card p-4 sm:p-5">
                   <div>
                     <h2 className="text-lg font-medium">Sovereign Address &amp; Domain</h2>
                     <p className="mt-1 text-xs text-muted-foreground">Je ROUT-username en eigen bedrijfsdomein bepalen waar deze workspace live staat.</p>
@@ -2057,7 +2031,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                 </section>
 
                 {/* 2 — Decentrale identiteiten: Bluesky, Mastodon rel="me", GitHub. */}
-                <section className="space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                <section className="space-y-4 acrylic-card p-4 sm:p-5">
                   <div>
                     <h2 className="text-lg font-medium">Decentrale identiteiten &amp; socials</h2>
                     <p className="mt-1 text-xs text-muted-foreground">Bluesky-handle, Mastodon-verificatie en GitHub- of andere openbare profielen.</p>
@@ -2067,7 +2041,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                 </section>
 
                 {/* 3 — Verificatie & badges. */}
-                <section className="space-y-3 rounded-2xl border border-border bg-card p-4 sm:p-5">
+                <section className="space-y-3 acrylic-card p-4 sm:p-5">
                   <h2 className="text-lg font-medium">Verificatie &amp; badges</h2>
                   <ul className="divide-y divide-border rounded-xl border border-border text-sm">
                     <li className="flex items-center justify-between gap-3 px-3 py-2.5">
@@ -2090,12 +2064,12 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
                 </section>
               </div>
             ) : !verified ? (
-              <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
+              <div className="acrylic-card p-4 sm:p-5">
                 <SocialIdentityVerify />
               </div>
             ) : (
             <Accordion type="single" collapsible className="space-y-3">
-              <AccordionItem value="social_verify" className="rounded-2xl border border-border bg-card px-4 sm:px-5">
+              <AccordionItem value="social_verify" className="acrylic-card px-4 sm:px-5">
                 <AccordionTrigger className="hover:no-underline">
                   <span className="text-base font-medium">Mastodon &amp; sociale accounts</span>
                 </AccordionTrigger>
@@ -2105,7 +2079,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
               </AccordionItem>
               <AccordionItem
                 value="subdomain_settings"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="flex min-w-0 items-center gap-2 text-base font-medium"><StudioSectionIcon kind="domain" />{t("studio.editor.domains")}</span>
@@ -2120,7 +2094,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
 
               <AccordionItem
                 value="bluesky_did"
-                className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+                className="acrylic-card px-4 sm:px-5"
               >
                 <AccordionTrigger className="hover:no-underline">
                   <span className="flex min-w-0 items-center gap-2 text-base font-medium"><StudioSectionIcon kind="bluesky" />{t("studio.editor.bluesky")}</span>

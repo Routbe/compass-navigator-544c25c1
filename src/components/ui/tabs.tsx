@@ -17,7 +17,7 @@ const TabsList = React.forwardRef<
   return <IndicatorContext.Provider value={{ id, hovered, setHovered }}><TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+      "spatial-track inline-flex h-10 items-center justify-center p-1 text-muted-foreground",
       className,
     )}
     {...props}

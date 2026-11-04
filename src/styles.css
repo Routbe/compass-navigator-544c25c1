@@ -331,6 +331,9 @@ textarea[data-tour^="cc-"] {
   --color-cream: hsl(var(--cream));
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-spatial-base: var(--spatial-base);
+  --color-spatial-indicator: var(--spatial-indicator);
+  --color-tour-scrim: hsl(var(--tour-scrim));
   --color-primary: hsl(var(--primary));
   --color-live: hsl(var(--live));
   --color-identity-verified: var(--identity-verified);
