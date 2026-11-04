@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import {
   DropdownMenu,
-  DropdownMenuContent,
+  SpatialDropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -49,6 +49,7 @@ export function ProfileMenu() {
   const [verified, setVerified] = useState(false);
   const [earlyBeliever, setEarlyBeliever] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const loadAccount = useServerFn(getMyAccount);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -127,12 +128,12 @@ export function ProfileMenu() {
 
   return (
     <div className="flex items-center gap-3 sm:gap-4">
-      <DropdownMenu>
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
-          <button
+          <Button variant="ghost"
             type="button"
             aria-label="Account menu"
-            className="flex h-9 shrink-0 items-center gap-2 rounded-xl border border-border pl-1 pr-2 transition-colors hover:bg-secondary"
+            className="spatial-account-trigger flex h-9 shrink-0 items-center gap-2 rounded-lg pl-1 pr-2"
           >
             <UserAvatar
               src={avatarUrl}
@@ -143,10 +144,10 @@ export function ProfileMenu() {
             />
             <span className="hidden max-w-[9rem] truncate text-sm sm:inline">{displayName}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" aria-hidden />
-          </button>
+          </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" collisionPadding={16} className="max-h-[70vh] w-[calc(100vw-2rem)] max-w-72 overflow-y-auto bg-card">
+        <SpatialDropdownMenuContent open={menuOpen} align="end" collisionPadding={16} className="max-h-[70vh] w-[calc(100vw-2rem)] max-w-72 overflow-y-auto">
           <div className="px-2 py-2">
             <div className="flex items-center gap-2">
               <p className="truncate text-sm font-medium">{displayName}</p>
@@ -167,7 +168,7 @@ export function ProfileMenu() {
               <span className="truncate">{scopeApi.active ? scopeApi.active.name : "Persoonlijk"}</span>
               <ArrowLeftRight className="ml-auto h-3.5 w-3.5 text-muted-foreground" aria-hidden />
             </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent collisionPadding={12} className="max-h-[60vh] w-[min(15rem,calc(100vw-1.5rem))] overflow-y-auto bg-card">
+            <DropdownMenuSubContent collisionPadding={12} className="spatial-glass max-h-[60vh] w-[min(15rem,calc(100vw-1.5rem))] overflow-y-auto">
               <DropdownMenuItem onClick={() => scopeApi.switchTo(null)} className="gap-2">
                 <UserIcon className="h-4 w-4" aria-hidden /> Persoonlijk
                 {!scopeApi.active && <CheckIcon className="ml-auto h-4 w-4" aria-hidden />}
@@ -220,7 +221,7 @@ export function ProfileMenu() {
           >
             <LogOut className="h-4 w-4 shrink-0" aria-hidden /> Uitloggen
           </DropdownMenuItem>
-        </DropdownMenuContent>
+        </SpatialDropdownMenuContent>
       </DropdownMenu>
     </div>
   );
