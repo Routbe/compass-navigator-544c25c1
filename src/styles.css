@@ -1334,6 +1334,12 @@ select:focus-visible {
 .infra-marquee:hover .infra-marquee-track { animation-play-state: paused; }
 @keyframes infra-marquee { to { transform: translate3d(-50%, 0, 0); } }
 .infra-home .spatial-control-pill > [role="radiogroup"] { border: none; background: transparent; padding-right: 8px; margin-right: 3px; border-right: 1px solid var(--hardware-edge); border-radius: 0; }
+@media (min-width: 640px) and (max-height: 700px) {
+  .infra-hero-content { padding-top: 20px; padding-bottom: 20px; }
+  .infra-hero .infra-title { margin-top: 12px; font-size: 48px; }
+  .infra-hero .omni-bar { margin-top: 20px; }
+  .infra-home #ecosystem { padding-top: 24px; }
+}
 @media (max-width: 639px) {
   .infra-hero-image { opacity: 0.25; object-position: 70% center; }
   .infra-hero-content { min-height: auto; }
