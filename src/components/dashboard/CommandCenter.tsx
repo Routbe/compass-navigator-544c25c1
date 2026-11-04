@@ -44,6 +44,7 @@ import { getQuickPresence, setQuickPresence, type QuickPresence } from "@/lib/li
 import { PRESENCE_DEFS } from "@/lib/avatar-decorations";
 import { PresenceComposer } from "@/components/qa/PresenceComposer";
 import { ActivePulses } from "@/components/presence/ActivePulses";
+import { SpatialChoice } from "@/components/ui/spatial-choice";
 import { Input } from "@/components/ui/input";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
@@ -188,7 +189,7 @@ function QuickQr() {
   return (
     <div className="space-y-3">
       <form
-        className="flex items-center gap-2 rounded-xl border border-border bg-background p-1.5"
+        className="spatial-input flex items-center gap-2 rounded-lg p-1.5"
         onSubmit={(e) => {
           e.preventDefault();
           if (candidate) setUrl(candidate);
@@ -283,7 +284,7 @@ function ChronosStream({ events, syncing }: { events: ChronosEvent[]; syncing: b
   const shown = events.length ? events : EXAMPLE_EVENTS;
   return (
     <aside
-      className="min-w-0 rounded-2xl border border-border bg-card p-5 font-mono lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
+      className="acrylic-card min-w-0 p-5 font-mono lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto"
       aria-label="Chronos Stream"
     >
       <div className="flex items-center justify-between gap-2">
@@ -374,7 +375,7 @@ function AgendaWidget({ c }: { c: CommandCenterData | null }) {
 function SystemPulse({ items }: { items: { label: string; to: string }[] }) {
   if (!items.length) return null;
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 font-mono text-[11px] text-muted-foreground sm:col-span-2 xl:col-span-3">
+    <div className="acrylic-card flex flex-wrap items-center gap-2 px-3 py-2 font-mono text-[11px] text-muted-foreground sm:col-span-2 xl:col-span-3">
       <span className="uppercase tracking-[0.18em]">System pulse</span>
       {items.map((i) => (
         <Link key={i.label} to={i.to} className="rounded-full border border-border px-2 py-0.5 hover:border-border-ink hover:text-foreground">
@@ -418,14 +419,9 @@ function LivePresenceWidget({ userId }: { userId: string }) {
         <div className="mt-4 space-y-4">
           <div className="space-y-2">
             <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Indicator</p>
-            <div className="flex flex-wrap gap-2">
-              {PRESENCE_DEFS.map((p) => (
-                <Button key={p.id} type="button" size="sm" variant={d.presence === p.id ? "secondary" : "outline"} aria-pressed={d.presence === p.id} disabled={busy} className="h-8 gap-2 rounded-full text-xs" onClick={() => void apply({ presence: p.id })}>
-                  <span aria-hidden className="h-2.5 w-2.5 rounded-full border border-border" style={{ background: p.color }} />
-                  {p.label}
-                </Button>
-              ))}
-            </div>
+            <SpatialChoice label="Indicator" value={d.presence} disabled={busy} onChange={(presence) => void apply({ presence })}
+              options={PRESENCE_DEFS.map((p) => ({ value: p.id, label: <><span aria-hidden className="h-2 w-2 shrink-0 rounded-full border border-border" style={{ background: p.color }} />{p.label}</> }))}
+              className="flex-wrap [&>button]:basis-auto" />
           </div>
           <form className="space-y-2" onSubmit={(e) => { e.preventDefault(); void apply({ statusLine: value }); }}>
             <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Bericht</p>

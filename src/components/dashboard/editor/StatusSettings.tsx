@@ -1,3 +1,5 @@
+import { SpatialChoice } from "@/components/ui/spatial-choice";
+import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -15,27 +17,16 @@ export function StatusContentSettings({ prefs, setPref, bare = false, part }: { 
   const { t } = useI18n();
   const useEmoji = prefs.presenceIndicator === "emoji";
   return (
-    <section className={bare ? "space-y-4" : "space-y-4 rounded-2xl border border-border bg-card p-4 sm:p-5"}>
+    <section className={bare ? "space-y-4" : "acrylic-card space-y-4 p-4 sm:p-5"}>
       <div className={bare ? "hidden" : undefined}>
         <h2 className="text-lg font-medium">{t("studio.status.title")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">{t("studio.status.help")}</p>
       </div>
       {part !== "message" && <div className="space-y-2">
         <p className={part ? "sr-only" : "input-label"}>{t("studio.status.indicator")}</p>
-        <div className="flex flex-wrap gap-2">
-          {PRESENCE_DEFS.map((p) => {
-            const on = !useEmoji && prefs.presence === p.id;
-            return (
-              <button key={p.id} type="button" title={t(`studio.presence.${p.id}.hint`)} aria-pressed={on} onClick={() => { setPref("presence", p.id); if (useEmoji) setPref("presenceIndicator", "color"); }} className={cn(pill(on), "flex items-center gap-2")}>
-                <span aria-hidden className="h-2.5 w-2.5 rounded-full border border-border" style={{ background: p.color }} />
-                {t(`studio.presence.${p.id}`)}
-              </button>
-            );
-          })}
-          <button type="button" aria-pressed={useEmoji} onClick={() => setPref("presenceIndicator", "emoji")} className={cn(pill(useEmoji), "flex items-center gap-2")}>
-            <span aria-hidden>{prefs.presenceEmoji ?? "😎"}</span> {t("studio.status.custom")}
-          </button>
-        </div>
+        <SpatialChoice label={t("studio.status.indicator")} value={useEmoji ? "emoji" : prefs.presence} className="flex-wrap"
+          onChange={(value) => { if (value === "emoji") setPref("presenceIndicator", "emoji"); else { const presence = PRESENCE_DEFS.find((p) => p.id === value); if (!presence) return; setPref("presence", presence.id); if (useEmoji) setPref("presenceIndicator", "color"); } }}
+          options={[...PRESENCE_DEFS.map((p) => ({ value: p.id, title: t(`studio.presence.${p.id}.hint`), label: <><span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full border border-border" style={{ background: p.color }} />{t(`studio.presence.${p.id}`)}</> })), { value: "emoji", label: <><span aria-hidden>{prefs.presenceEmoji ?? "😎"}</span>{t("studio.status.custom")}</> }]} />
         {useEmoji ? (
           <div className="flex items-center gap-3 pt-1">
             <Input aria-label={t("studio.status.emoji")} inputMode="text" defaultValue={prefs.presenceEmoji ?? ""}
@@ -77,11 +68,11 @@ export function StatusDesignSettings({ prefs, setPref, avatarUrl, theme }: {
         <div className="grid w-36 grid-cols-3 gap-1.5" role="radiogroup" aria-label={t("studio.status.positionLabel")}>
           {COMPASS.map((pos, i) =>
             pos ? (
-              <button key={pos} type="button" role="radio" aria-checked={prefs.statusBubblePosition === pos} aria-label={t(`studio.status.position.${pos}`)} title={t(`studio.status.position.${pos}`)}
+              <Button variant="outline" key={pos} type="button" role="radio" aria-checked={prefs.statusBubblePosition === pos} aria-label={t(`studio.status.position.${pos}`)} title={t(`studio.status.position.${pos}`)}
                 onClick={() => setPref("statusBubblePosition", pos)}
                 className={cn("flex h-10 items-center justify-center rounded-lg border transition-colors", prefs.statusBubblePosition === pos ? "border-primary bg-primary/15" : "border-border hover:bg-muted")}>
                 <span className={cn("h-2 w-2 rounded-full", prefs.statusBubblePosition === pos ? "bg-primary" : "bg-muted-foreground/50")} />
-              </button>
+              </Button>
             ) : (
               <span key={i} aria-hidden className="flex h-10 items-center justify-center rounded-full border border-dashed border-border text-[9px] text-muted-foreground">{t("studio.status.avatar")}</span>
             ),
@@ -93,11 +84,11 @@ export function StatusDesignSettings({ prefs, setPref, avatarUrl, theme }: {
         <p className="input-label">{t("studio.status.style")}</p>
         <div className="flex flex-wrap gap-2">
           {BUBBLE_STYLES.map((s) => (
-            <button key={s.id} type="button" aria-pressed={prefs.statusBubbleStyle === s.id} onClick={() => setPref("statusBubbleStyle", s.id)}
+            <Button variant="outline" key={s.id} type="button" aria-pressed={prefs.statusBubbleStyle === s.id} onClick={() => setPref("statusBubbleStyle", s.id)}
               className={cn("rounded-xl border p-2 transition-colors", prefs.statusBubbleStyle === s.id ? "border-primary ring-1 ring-primary" : "border-border")}
               style={{ background: theme.bg, color: theme.text }}>
               <span className="status-bubble !animate-none !max-w-none" data-style={s.id} data-pos="top" style={{ display: "inline-block" }}>{t(`studio.status.style.${s.id}`)}</span>
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -107,7 +98,7 @@ export function StatusDesignSettings({ prefs, setPref, avatarUrl, theme }: {
           <p className="input-label">{t("studio.status.bg")}</p>
           <div className="flex items-center gap-2">
             <input type="color" aria-label={t("studio.status.bgLabel")} value={prefs.statusBubbleBg ?? "#0d0d12"} onChange={(e) => setPref("statusBubbleBg", e.target.value)} className="h-10 w-14 cursor-pointer rounded-md border border-border bg-transparent" />
-            {prefs.statusBubbleBg && <button type="button" onClick={() => setPref("statusBubbleBg", null)} className="text-xs text-muted-foreground underline">{t("studio.status.reset")}</button>}
+            {prefs.statusBubbleBg && <Button variant="outline" type="button" onClick={() => setPref("statusBubbleBg", null)} className="text-xs text-muted-foreground underline">{t("studio.status.reset")}</Button>}
           </div>
           <p className="text-xs text-muted-foreground">{t("studio.status.contrast")}</p>
         </div>
@@ -115,7 +106,7 @@ export function StatusDesignSettings({ prefs, setPref, avatarUrl, theme }: {
           <p className="input-label">{t("studio.status.font")}</p>
           <div className="flex flex-wrap gap-2">
             {BUBBLE_FONTS.map((f) => (
-              <button key={f.id} type="button" aria-pressed={prefs.statusBubbleFont === f.id} onClick={() => setPref("statusBubbleFont", f.id)} className={pill(prefs.statusBubbleFont === f.id)} style={{ fontFamily: f.css }}>{t(`studio.status.font.${f.id}`)}</button>
+              <Button variant="outline" key={f.id} type="button" aria-pressed={prefs.statusBubbleFont === f.id} onClick={() => setPref("statusBubbleFont", f.id)} className={pill(prefs.statusBubbleFont === f.id)} style={{ fontFamily: f.css }}>{t(`studio.status.font.${f.id}`)}</Button>
             ))}
           </div>
         </div>

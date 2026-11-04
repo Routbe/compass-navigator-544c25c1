@@ -1,9 +1,15 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowRight,
+  ArrowUpRight,
   AtSign,
   Braces,
   Building2,
+  CalendarDays,
+  MessageCircle,
+  Palette,
+  Globe,
+  Shield,
   KeyRound,
   CornerDownLeft,
   Fingerprint,
@@ -25,31 +31,31 @@ import { parseOmniInput, type OmniIntent } from "@/lib/omni-parser";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n";
 import { useTypingPlaceholder } from "@/hooks/useTypingPlaceholder";
-import { GlowCard } from "@/components/gateway/BentoVisuals";
-import { IdentityVisual, WalletVisual, CommerceVisual, RoutingVisual, IntegrationMesh, DataPaths } from "@/components/gateway/InfrastructureVisuals";
+import routingStage from "@/assets/rout-routing-stage.jpg";
+import everydayImage from "@/assets/rout-qr-everyday.jpg";
+import { ProfileScene, QrScene, AnalyticsScene, SocialScene, WorkspaceScene, DeveloperScene } from "@/components/gateway/StoryVisuals";
+import { IdentityVisual, WalletVisual, CommerceVisual, IntegrationMesh } from "@/components/gateway/InfrastructureVisuals";
 
 const TYPING_KEYS = ["gateway.typing.qr", "gateway.typing.handle", "gateway.typing.paste"] as const;
 
-const ECOSYSTEM = [
-  {
-    Icon: KeyRound,
-    key: "identity",
-    to: "/developer/identity-oauth",
-    Visual: IdentityVisual,
-      },
-  {
-    Icon: Wallet,
-    key: "wallet",
-    to: "/info/wallet",
-    Visual: WalletVisual,
-      },
-  {
-    Icon: CreditCard,
-    key: "commerce",
-    to: "/solutions/creators",
-    Visual: CommerceVisual,
-      },
-  { Icon: QrCode, key: "routing", to: "/qr", Visual: RoutingVisual },
+const CHAPTERS = [
+  { key: "profile", to: "/info/profiles", Visual: ProfileScene, points: 3 },
+  { key: "qr", to: "/info/qr-studio", Visual: QrScene, points: 3 },
+  { key: "analytics", to: "/features/cookieless-analytics", Visual: AnalyticsScene, points: 3 },
+  { key: "identity", to: "/developer/identity-oauth", Visual: IdentityVisual, points: 3 },
+  { key: "wallet", to: "/info/wallet", Visual: WalletVisual, points: 3 },
+  { key: "commerce", to: "/info/tips", Visual: CommerceVisual, points: 3 },
+  { key: "social", to: "/info/anonymous-questions", Visual: SocialScene, points: 3 },
+  { key: "workspace", to: "/solutions/agencies", Visual: WorkspaceScene, points: 3 },
+  { key: "developer", to: "/developers", Visual: DeveloperScene, points: 3 },
+] as const;
+const MORE = [
+  { key: "booking", to: "/info/bookings", Icon: CalendarDays },
+  { key: "design", to: "/features/design-studio", Icon: Palette },
+  { key: "guestbook", to: "/info/guestbook", Icon: MessageCircle },
+  { key: "assets", to: "/features/asset-manager", Icon: Globe },
+  { key: "security", to: "/info/account-security", Icon: Shield },
+  { key: "open", to: "/about/open-source", Icon: Braces },
 ] as const;
 
 const PRINCIPLES = [
@@ -114,10 +120,10 @@ export default function Gateway() {
   return (
     <AppLayout width="full" revealFooter tone="infrastructure">
       <section className="infra-hero">
-        <img src={infrastructureImage} alt="" width={1920} height={1024} fetchPriority="high" className="infra-hero-image" />
-        <div className="infra-hero-content mx-auto flex max-w-6xl flex-col items-start px-4 py-8 sm:px-6 sm:py-10">
+        <img src={routingStage} alt="" width={1920} height={1024} fetchPriority="high" className="infra-hero-image" />
+        <div className="infra-hero-content mx-auto flex max-w-6xl flex-col items-start px-6 py-8 sm:px-10 sm:py-10">
           <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{t("gateway.kicker")}</p>
-          <h1 className="infra-title mt-5 font-display text-4xl leading-[1.05] sm:text-6xl">
+          <h1 className="infra-title mt-5 font-display text-6xl leading-[1.05] sm:text-7xl">
             ROUT
           </h1>
           <p className="mt-3 max-w-xl font-display text-2xl leading-tight sm:text-3xl">{t("infra.lead.title")}</p>
@@ -197,79 +203,34 @@ export default function Gateway() {
               {t("gateway.explore")} <ArrowRight className="h-4 w-4" />
             </Button></motion.div>
           </div>
-          <Button variant="ghost" size="sm"
-            type="button"
-            onClick={() => window.dispatchEvent(new Event("rout:command-palette"))}
-            className="mt-4 hidden h-7 items-center gap-1.5 p-0 text-xs text-muted-foreground sm:inline-flex"
-          >
-            {t("gateway.palette")} <kbd className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-          </Button>
+
         </div>
       </section>
 
-      <div id="ecosystem" className="infra-ecosystem mx-auto max-w-6xl scroll-mt-20 px-4 pb-16 pt-12 sm:px-6 sm:pb-24">
-        <Reveal className="max-w-3xl">
-          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">{t("gateway.eco.kicker")}</p>
-          <h2 className="mt-3 font-display text-3xl leading-tight sm:text-4xl">
-            {t("infra.eco.title")}
-          </h2>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            {t("infra.eco.lead")}
-          </p>
+      <section id="ecosystem" className="story-intro story-section scroll-mt-20">
+        <Reveal className="story-inner">
+          <p className="story-small-label">{t("story.intro.kicker")}</p>
+          <h2 className="story-heading mt-6">{t("story.intro.title")}</h2>
+          <p className="story-prose mt-6">{t("story.intro.text")}</p>
+          <div className="story-index mt-12">{CHAPTERS.map(({ key }, i) => <a key={key} href={`#chapter-${key}`}><span className="font-mono text-primary">0{i + 1}</span>{t(`story.${key}.short`)}<ArrowRight className="h-3 w-3" /></a>)}</div>
         </Reveal>
+      </section>
 
-        <DataPaths />
-        <Reveal className="grid gap-4 md:grid-cols-2">
-          {ECOSYSTEM.map(({ Icon, key, to, Visual }) => (
-            <GlowCard key={key} className="acrylic-card infra-pillar">
-              <div className="flex h-full flex-col p-6">
-                <div className="infra-visual mb-6 flex items-center justify-center">
-                  <Visual />
-                </div>
-                <span className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-                  <Icon className="h-3.5 w-3.5" aria-hidden /> {key.toUpperCase()} / ROUT
-                </span>
-                <h3 className="mt-4 font-display text-2xl text-foreground">{t(`infra.${key}.title`)}</h3>
-                <p className="mt-3 flex-1 font-mono text-xs leading-relaxed text-muted-foreground">{t(`infra.${key}.text`)}</p>
-                <Link to={to} className="group mt-5 inline-flex items-center gap-1.5 text-sm text-foreground">
-                  {t(`infra.${key}.cta`)} <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                </Link>
-              </div>
-            </GlowCard>
-          ))}
+      {CHAPTERS.map(({ key, to, Visual, points }, i) => <section key={key} id={`chapter-${key}`} className={`story-section story-chapter story-chapter-${key}`}>
+        <Reveal className="story-inner">
+          <div className="story-chapter-heading"><div className="story-chapter-number" aria-hidden>0{i + 1}</div><div><p className="story-small-label">ROUT / {t(`story.${key}.short`)}</p><h2 className="story-heading mt-5">{t(`story.${key}.title`)}</h2><p className="story-prose mt-6">{t(`story.${key}.text`)}</p><Button asChild variant="outline" className="mt-7 gap-3"><Link to={to}>{t(`story.${key}.cta`)}<ArrowUpRight className="h-4 w-4" /></Link></Button></div></div>
+          {key === "wallet" && <div className="story-card-photograph"><img src={infrastructureImage} width={1920} height={1024} loading="lazy" alt={t("infra.cardPreview")} /></div>}
+          <div className="story-product-stage"><Visual /></div>
+          <div className="story-feature-rows">{Array.from({ length: points }, (_, j) => <div key={j}><span className="font-mono text-xs text-primary">0{j + 1}</span><h3>{t(`story.${key}.point${j + 1}.title`)}</h3><p>{t(`story.${key}.point${j + 1}.text`)}</p></div>)}</div>
         </Reveal>
+        {key === "qr" && <Reveal className="story-everyday"><img src={everydayImage} loading="lazy" width={1920} height={1024} alt={t("story.everyday.alt")} /><div className="story-everyday-caption"><p className="story-small-label">{t("story.everyday.kicker")}</p><h3 className="mt-4 font-display text-3xl sm:text-4xl">{t("story.everyday.title")}</h3></div></Reveal>}
+      </section>)}
 
-        <Reveal className="mt-8 grid gap-6 border-y border-border py-7 sm:grid-cols-2">
-          {[{ key: "workspace", Icon: Building2, to: "/support/workspace/getting-started/what-is-a-workspace" }, { key: "api", Icon: Braces, to: "/developers" }].map(({ key, Icon, to }) => <Link key={key} to={to} className="flex items-center gap-4"><Icon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block font-display text-xl">{t(`infra.${key}.title`)}</span><span className="mt-1 block font-mono text-xs text-muted-foreground">{t(`infra.${key}.text`)}</span></span><ArrowRight className="ml-auto h-4 w-4 shrink-0" /></Link>)}
-        </Reveal>
-        <IntegrationMesh />
+      <section className="story-section story-connections"><Reveal className="story-inner"><p className="story-small-label">ROUT / CONNECTIONS</p><h2 className="story-heading mt-5">{t("story.connections.title")}</h2><p className="story-prose mt-6">{t("story.connections.text")}</p><IntegrationMesh /><Button asChild variant="outline" className="mt-8"><Link to="/about/ecosystem">{t("story.connections.cta")}<ArrowUpRight /></Link></Button></Reveal></section>
 
-        <Reveal className="mt-20 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
-          {PRINCIPLES.map(({ Icon, text }) => (
-            <span key={text} className="inline-flex items-center gap-2">
-              <Icon className="h-4 w-4 text-foreground" aria-hidden /> {t(text)}
-            </span>
-          ))}
-        </Reveal>
+      <section className="story-section"><Reveal className="story-inner"><p className="story-small-label">{t("story.more.kicker")}</p><h2 className="story-heading mt-5">{t("story.more.title")}</h2><div className="story-more-grid mt-12">{MORE.map(({ key, to, Icon }) => <Link key={key} to={to} className="story-more-item"><Icon className="h-5 w-5 text-primary" /><h3 className="mt-6 font-display text-2xl">{t(`story.${key}.title`)}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(`story.${key}.text`)}</p><ArrowUpRight className="mt-6 h-4 w-4" /></Link>)}</div></Reveal></section>
 
-        <Reveal className="mt-16 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-          <Link to="/explore" className="underline-offset-4 hover:text-foreground hover:underline">
-            {t("gateway.link.explore")}
-          </Link>
-          <Link to="/product" className="underline-offset-4 hover:text-foreground hover:underline">
-            {t("gateway.link.platform")}
-          </Link>
-          <Link to="/developers" className="underline-offset-4 hover:text-foreground hover:underline">
-            {t("gateway.link.developers")}
-          </Link>
-          <Link to="/about" className="underline-offset-4 hover:text-foreground hover:underline">
-            {t("gateway.link.about")}
-          </Link>
-          <Link to="/auth/sign-in" className="underline-offset-4 hover:text-foreground hover:underline">
-            {t("gateway.link.signIn")}
-          </Link>
-        </Reveal>
-      </div>
+      <section className="story-section story-final"><Reveal className="story-inner"><p className="story-small-label">ROUT / YOUR NEXT CHAPTER</p><h2 className="story-heading mt-6">{t("story.final.title")}</h2><p className="story-prose mt-6">{t("story.final.text")}</p><Button asChild size="lg" className="mt-8"><Link to="/auth"><Fingerprint />{t("gateway.claim")}<ArrowRight /></Link></Button><div className="mt-14 flex flex-wrap gap-8 text-xs text-muted-foreground">{PRINCIPLES.map(({ Icon, text }) => <span key={text} className="flex items-center gap-2"><Icon className="h-4 w-4" />{t(text)}</span>)}</div><div className="mt-12 flex flex-wrap gap-6 border-t border-border pt-8 text-sm"><Link to="/product">{t("gateway.link.platform")}</Link><Link to="/about">{t("gateway.link.about")}</Link><Link to="/developers">{t("gateway.link.developers")}</Link><Link to="/auth/sign-in">{t("gateway.link.signIn")}</Link></div></Reveal></section>
     </AppLayout>
   );
 }

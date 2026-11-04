@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export function AdminFrame({ children, heading, width }: PortalFrameProps) {
   const { user, signOut } = useAuth();
   return (
-    <div className="flex min-h-screen flex-col bg-background" data-shell="admin">
+    <div className="flex min-h-screen flex-col bg-background" data-shell="admin" data-hardware-ui>
       <header className="sticky top-0 z-50 border-b border-border bg-background">
         <div className="flex min-h-16 flex-wrap items-center gap-3 px-4 py-3">
           <Link to="/admin" aria-label="ROUT beheer"><RoutLogo size={28} /></Link>

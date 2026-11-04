@@ -1,10 +1,11 @@
+import { Button } from "@/components/ui/button";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /** Eén gedeelde keuzechip voor de hele Studio (los van de profielknoppen). */
 export function StudioChip({ active, onClick, children, disabled }: { active: boolean; onClick: () => void; children: ReactNode; disabled?: boolean }) {
   return (
-    <button
+    <Button variant="outline" size="sm"
       type="button"
       aria-pressed={active}
       disabled={disabled}
@@ -15,6 +16,6 @@ export function StudioChip({ active, onClick, children, disabled }: { active: bo
       )}
     >
       {children}
-    </button>
+    </Button>
   );
 }
