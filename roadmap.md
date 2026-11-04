@@ -1,4 +1,7 @@
 # Repository import
+- [ ] Rebuild homepage as a long, spacious product narrative with full-width visuals, scroll reveals and the accepted card image below the opening.
+- [ ] Audit controls throughout the source and replace remaining flat shared buttons, fields, tabs, status selectors, switches and frames with spatial hardware materials.
+- [ ] Verify homepage, public controls, mobile layout and focused regression tests; clearly identify account-only checks that remain unavailable.
 - [x] Upgrade homepage to the uploaded Neon-inspired infrastructure brief: four product pillars, integration mesh, recessed input, tactile actions, engineering canvas and unified language/navigation surface.
 - [x] Verify Neon role availability read-only: My Neon responds successfully, current role is neondb_owner and rout_app exists; no credentials or privileges changed.
 - [x] Verify homepage at 1280x1800, 968x634 and 390x844: four pillars, readable card face, no horizontal overflow, NL switch and reduced-motion pause; input rules and header tests pass.
