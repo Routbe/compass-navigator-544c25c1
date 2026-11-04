@@ -5,8 +5,8 @@
 - [ ] Account/data features: blocked until the original services are configured; no data migration authorized.
 
 ## Spatial Studio transformation
-- [ ] Finish the unified header control pill, subtle local material grain and supported-device menu haptics from the new blueprints.
-- [ ] Recheck supplied repositories against their actual source and retain accepted card/glass engines.
+- [x] Finish the unified header control pill, subtle local material grain and supported-device menu haptics from the new blueprints.
+- [x] Recheck supplied repositories against their actual source and retain accepted card/glass engines; do not copy react-tilt-3d without a verified license.
 - [x] Research supplied repositories and compare uploaded requirements with existing engines.
 - [x] Apply acrylic containers, shared hover indicators, spatial account popovers and global cursor illumination.
 - [x] Implement public-front 3x WebGL PNG capture with renderer/camera restoration and official Google Wallet logo/class row layout.

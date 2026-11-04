@@ -19,3 +19,5 @@
 - Reuse the existing LiquidGlass runtime as the sole global pointer scheduler; Motion handles shared indicators and Radix-backed popover presence because duplicate engines cause conflicting state and listeners.
 - Card PNG captures render the public front synchronously and restore renderer, camera and card transforms because empty buffers and private back-face tokens must never enter exported artwork.
 - Google Wallet rows belong to GenericClass classTemplateInfo; GenericObject contains official branding fields only because unsupported payload properties are rejected.
+- HeaderControls owns only shared hover/focus artwork; invite, account and tool controls retain their own auth guards and modal semantics because decoration must never initiate navigation.
+- Haptics are best-effort, respect reduced motion and never gate an action because unsupported devices must retain identical behavior.

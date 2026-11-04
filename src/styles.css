@@ -1497,6 +1497,7 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   border: 1px solid var(--hardware-edge);
   border-top-color: var(--chamfer-light);
   isolation: isolate;
+  background-image: radial-gradient(140px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), var(--spatial-indicator), var(--optical-clear));
 }
 @utility spatial-control-slot {
   position: relative;
