@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Link } from "@/lib/router-compat";
 import { ExploreGallery } from "@/components/explore/ExploreGallery";
 import { listShowcaseCards, type ShowcaseCard } from "@/lib/showcase.functions";
@@ -25,12 +26,9 @@ export function ProfileShowcase() {
       </div>
       <div className="mt-8 min-h-[200px]">{cards && <ExploreGallery cards={cards} />}</div>
       <div className="mt-8 text-center">
-        <Link
-          to="/explore"
-          className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-foreground px-8 font-semibold text-background transition-opacity hover:opacity-90"
-        >
+        <Button asChild size="lg"><Link to="/explore">
           {t("explore.more")} <ArrowRight className="h-4 w-4" aria-hidden />
-        </Link>
+        </Link></Button>
       </div>
     </section>
   );

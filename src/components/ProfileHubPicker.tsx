@@ -224,7 +224,7 @@ export function ProfileHubPicker({ values, onChange }: Props) {
         type="button"
         onClick={() => void saveDesign()}
         disabled={saving || !user || !design || (activeWs ? !canEditWorkspaceHub(activeWs.role) : false)}
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-foreground text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="min-h-12 w-full gap-2 rounded-lg text-sm"
       >
         {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : saved ? <Check className="h-4 w-4" /> : null}
         {!user ? "Log in om op te slaan" : saved ? "Opgeslagen" : "Opslaan"}

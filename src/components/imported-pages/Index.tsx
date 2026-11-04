@@ -687,12 +687,9 @@ const Index = () => {
 
       <section className="mx-auto mt-10 max-w-2xl px-4 text-center">
         <p className="text-sm text-muted-foreground">{t("tour.cta.title")}</p>
-        <Link
-          to="/tour"
-          className="mt-3 inline-flex min-h-11 items-center justify-center rounded-xl bg-foreground px-6 text-sm font-medium text-background transition-opacity hover:opacity-90"
-        >
+        <Button asChild size="lg" variant="outline" className="mt-3"><Link to="/tour">
           {t("tour.cta.button")}
-        </Link>
+        </Link></Button>
       </section>
 
       <ValuesSection />

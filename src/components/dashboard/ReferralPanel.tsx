@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Check, Copy, Gift, Share2, Users } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -99,17 +101,17 @@ export function ReferralPanel() {
       </div>
       <p className="text-sm text-muted-foreground">{t("referral.body")}</p>
       <div className="flex flex-wrap items-center gap-2">
-        <input
+        <Input
           readOnly
           value={link}
           aria-label={t("referral.title")}
           onFocus={(e) => e.currentTarget.select()}
-          className="min-w-0 flex-1 rounded-xl border border-border bg-background px-3 py-2 font-mono text-xs"
+          className="min-w-0 basis-full sm:basis-auto flex-1 px-3 py-2 font-mono text-xs"
         />
-        <button
+        <Button variant="outline"
           type="button"
           onClick={copy}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-sm font-medium"
+          className="min-h-10 gap-1.5 px-3 text-sm"
         >
           {copied ? (
             <Check className="h-4 w-4" aria-hidden />
@@ -117,15 +119,15 @@ export function ReferralPanel() {
             <Copy className="h-4 w-4" aria-hidden />
           )}
           {copied ? t("referral.copied") : t("referral.copy")}
-        </button>
-        <button
+        </Button>
+        <Button variant="outline"
           type="button"
           onClick={share}
-          className="inline-flex items-center gap-1.5 rounded-xl border border-border px-3 py-2 text-sm font-medium"
+          className="min-h-10 gap-1.5 px-3 text-sm"
         >
           <Share2 className="h-4 w-4" aria-hidden />
           {t("referral.share")}
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-2 rounded-xl border border-border/70 bg-background/60 p-3">

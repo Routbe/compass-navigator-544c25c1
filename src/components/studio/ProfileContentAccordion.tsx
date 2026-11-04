@@ -57,23 +57,23 @@ export function ProfileContentAccordion({
   return (
     <AccordionItem
       value="components_list"
-      className="rounded-2xl border border-border bg-card px-4 sm:px-5"
+      className="acrylic-card px-4 sm:px-5"
     >
       <AccordionTrigger className="hover:no-underline">
-        <span className="flex flex-1 items-center justify-between gap-3 pr-2">
+        <span className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-2 pr-2">
           <span className="flex min-w-0 items-center gap-2 text-base font-medium"><StudioSectionIcon kind="content" />{t("studio.content.title").replace(/^\p{Extended_Pictographic}\s*/u, "")}</span>
-          <span className="rounded-full border border-border px-2 py-0.5 text-[10px] text-muted-foreground">
+          <span className="shrink-0 rounded-full border border-border px-2 py-0.5 text-[10px] text-muted-foreground">
             {t("studio.content.visible", { count: live })}
           </span>
         </span>
       </AccordionTrigger>
       <AccordionContent className="space-y-4 pb-5">
-        <button
+        <Button variant="outline"
           type="button"
           onClick={() => setLibraryOpen(true)}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border text-sm font-medium transition-colors hover:bg-muted"
+          className="min-h-12 w-full gap-2 text-sm"
         >
-          <Plus className="h-4 w-4" aria-hidden /> {t("studio.content.add")} </button>
+          <Plus className="h-4 w-4" aria-hidden /> {t("studio.content.add")} </Button>
         <AddComponentModal
           open={libraryOpen}
           onClose={() => setLibraryOpen(false)}
@@ -81,7 +81,7 @@ export function ProfileContentAccordion({
           handle={handle}
           onWidget={onWidget}
         />
-        <Button variant="ghost" className="w-full justify-start gap-2" onClick={() => {
+        <Button variant="ghost" className="h-auto min-h-10 w-full justify-start gap-2 text-left" onClick={() => {
           const grid = blocks.find((block) => block.kind === "social_grid");
           if (grid) onOpenBlockChange(grid.id);
           else onAddKind("social_grid");
