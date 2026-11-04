@@ -1148,7 +1148,7 @@ export function ProfileEditor({ variant = "verified", pageMode = "profile", onPa
       ) : (
       <>
       {/* RIJ 2 — hoofdnavigatie van de studio */}
-      <SpatialChoice role="tablist" label="Studio" value={tab} onChange={setTab}
+      <SpatialChoice<StudioTab> role="tablist" label="Studio" value={tab} onChange={setTab}
         className="sticky top-14 z-30 w-full overflow-x-auto"
         options={visibleTabs.map(({ id }) => ({ value: id, title: t(`studio.tab.${id}`), label: <><StudioSectionIcon kind={id === "links" ? "content" : id} className="size-4 text-current" />{t(`studio.tab.${id}`)}</> }))} />
 
