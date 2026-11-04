@@ -64,7 +64,7 @@ export function LiquidGlassFilters({ tokens }: { tokens: readonly LensTokens[] }
 
 let installed = 0;
 let disposeRuntime: (() => void) | null = null;
-const SURFACE = '[style*="--lg-filter"], [style*="--lg-x"], [data-liquid-glass], .acrylic-card, .spatial-glass, .glow-card, [role="tab"]';
+const SURFACE = '[style*="--lg-filter"], [style*="--lg-x"], [data-liquid-glass], .acrylic-card, .spatial-glass, .spatial-control-pill, .glow-card, [role="tab"]';
 
 function supportsSvgBackdrop(): boolean {
   const nav = navigator as Navigator & { userAgentData?: { brands?: { brand: string }[] } };

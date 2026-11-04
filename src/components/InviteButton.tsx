@@ -11,6 +11,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ReferralPanel } from "@/components/dashboard/ReferralPanel";
+import { HeaderControl } from "@/components/layout/HeaderControls";
+import { spatialHaptic } from "@/lib/spatial-haptics";
 
 /** Header-actie voor ingelogde leden: uitnodigingslink + beloningsvoortgang in een modal. */
 export function InviteButton() {
@@ -18,11 +20,10 @@ export function InviteButton() {
   const { user } = useAuth();
   if (!user) return null;
   return (
-    <Dialog>
+    <HeaderControl name="invite"><Dialog onOpenChange={() => spatialHaptic()}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1.5" aria-label={t("ui.invite")}>
+        <Button variant="ghost" size="icon" title={t("ui.invite")} aria-label={t("ui.invite")}>
           <UserPlus className="h-4 w-4" aria-hidden />
-          <span className="hidden sm:inline">{t("ui.invite")}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-lg">
@@ -34,6 +35,6 @@ export function InviteButton() {
         </DialogHeader>
         <ReferralPanel />
       </DialogContent>
-    </Dialog>
+    </Dialog></HeaderControl>
   );
 }

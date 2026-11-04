@@ -1443,6 +1443,15 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   border: 1px solid var(--hardware-edge);
   border-radius: 8px;
   box-shadow: none;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: var(--spatial-grain);
+  }
   &::before {
     content: "";
     position: absolute;
@@ -1475,6 +1484,32 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   z-index: 0;
   background: transparent;
   box-shadow: none;
+}
+@utility spatial-control-pill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  max-width: 100%;
+  border-radius: 999px;
+  background: var(--spatial-base);
+  backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--hardware-edge);
+  border-top-color: var(--chamfer-light);
+  isolation: isolate;
+  background-image: radial-gradient(140px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), var(--spatial-indicator), var(--optical-clear));
+}
+@utility spatial-control-slot {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 999px;
+  & button, & a { border-radius: inherit; background: transparent; box-shadow: none; }
+}
+:root {
+  --spatial-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='white' filter='url(%23n)' d='M0 0h128v128H0z'/%3E%3C/svg%3E");
 }
 @utility spatial-indicator {
   position: absolute;
