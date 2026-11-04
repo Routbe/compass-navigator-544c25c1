@@ -121,7 +121,7 @@ export function AppLayout({
   );
   if (Frame) return <Frame heading={heading} width={width}>{children}</Frame>;
   return (
-    <div className={cn("flex min-h-screen flex-col bg-background pb-[env(safe-area-inset-bottom)] text-foreground", tone !== "default" && "dark", tone === "infrastructure" && "infra-home")}>
+    <div data-hardware-ui className={cn("flex min-h-screen flex-col bg-background pb-[env(safe-area-inset-bottom)] text-foreground", tone !== "default" && "dark", tone === "infrastructure" && "infra-home")}>
       <header
         data-testid="app-header"
         data-hidden={hidden ? "true" : "false"}
@@ -207,7 +207,7 @@ export function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
+    <div className="acrylic-card p-4">
       <div className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
         <BarChart3 className="h-3.5 w-3.5" aria-hidden /> {label}
       </div>

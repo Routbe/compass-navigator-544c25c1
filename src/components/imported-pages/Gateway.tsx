@@ -34,7 +34,7 @@ import { useTypingPlaceholder } from "@/hooks/useTypingPlaceholder";
 import routingStage from "@/assets/rout-routing-stage.jpg";
 import everydayImage from "@/assets/rout-qr-everyday.jpg";
 import { ProfileScene, QrScene, AnalyticsScene, SocialScene, WorkspaceScene, DeveloperScene } from "@/components/gateway/StoryVisuals";
-import { IdentityVisual, WalletVisual, CommerceVisual, RoutingVisual, IntegrationMesh, DataPaths } from "@/components/gateway/InfrastructureVisuals";
+import { IdentityVisual, WalletVisual, CommerceVisual, IntegrationMesh } from "@/components/gateway/InfrastructureVisuals";
 
 const TYPING_KEYS = ["gateway.typing.qr", "gateway.typing.handle", "gateway.typing.paste"] as const;
 
@@ -203,13 +203,7 @@ export default function Gateway() {
               {t("gateway.explore")} <ArrowRight className="h-4 w-4" />
             </Button></motion.div>
           </div>
-          <Button variant="ghost" size="sm"
-            type="button"
-            onClick={() => window.dispatchEvent(new Event("rout:command-palette"))}
-            className="mt-4 hidden h-7 items-center gap-1.5 p-0 text-xs text-muted-foreground sm:inline-flex"
-          >
-            {t("gateway.palette")} <kbd className="rounded border border-border px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-          </Button>
+
         </div>
       </section>
 

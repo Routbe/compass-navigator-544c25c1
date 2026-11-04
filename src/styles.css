@@ -1681,11 +1681,11 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
 
 /* Long-form ROUT narrative. Sections are unframed, product tools alone have material. */
 .infra-home.dark { background-image: none; --story-photo-shade: oklch(0 0 0 / .7); --story-line: oklch(.8 .05 165); }
-.infra-hero { min-height: 650px; }
+.infra-hero { min-height: 540px; }
 .infra-hero-image { object-position: center; opacity: .8; }
-.infra-hero-content { min-height: 650px; justify-content: center; position: relative; }
+.infra-hero-content { min-height: 540px; justify-content: center; position: relative; }
 .infra-hero-content > p, .infra-hero-content > h1 { max-width: 550px; }
-.infra-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--color-background) 0%, color-mix(in oklab, var(--color-background) 94%, transparent) 34%, transparent 80%); }
+.infra-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--color-background) 0%, color-mix(in oklab, var(--color-background) 97%, transparent) 46%, transparent 90%); }
 .infra-hero .infra-title { font-size: 88px; }
 .story-inner { max-width: 1120px; margin-inline: auto; padding-inline: 40px; }
 .story-section { padding-block: 110px; border-top: 1px solid var(--infra-edge); }
@@ -1762,8 +1762,8 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   .story-orbit-label { top: 0; }
 }
 @media (max-width: 639px) {
-  .infra-hero, .infra-hero-content { min-height: 700px; }
-  .infra-hero-content { justify-content: flex-start; padding-top: 40px; padding-bottom: 180px; }
+  .infra-hero, .infra-hero-content { min-height: 660px; }
+  .infra-hero-content { justify-content: flex-start; padding-top: 40px; padding-bottom: 65px; }
   .infra-hero .infra-title { font-size: 72px; }
   .infra-hero-image { opacity: .75; object-position: 64% bottom; }
   .infra-hero::after { background: linear-gradient(var(--color-background) 0%, color-mix(in oklab, var(--color-background) 96%, transparent) 48%, transparent 85%); }
@@ -1800,3 +1800,21 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   .story-window-bar { padding-inline: 15px; font-size: 9px; }
 }
 @media (prefers-reduced-motion: reduce) { .story-chart-line { stroke-dashoffset: 0; animation: none; } }
+
+/* Compatibility layer for imported app controls. Never recolour exported QR artwork or member themes. */
+.spatial-button[data-spatial-control="ghost"], .spatial-button[data-spatial-control="link"] { border-color: transparent; box-shadow: none; background-image: none; backdrop-filter: none; }
+.spatial-control-slot .spatial-button { border: 0; box-shadow: none; background-image: none; backdrop-filter: none; }
+[data-hardware-ui] :where(button:not([data-spatial-control]):not([role="tab"]):not([role="switch"]):not([role="checkbox"]):not([role="radio"])):not([data-profile-theme] *):not([data-qr-container] *):not(.spatial-control-slot *) {
+  border-color: var(--hardware-edge);
+  border-top-color: var(--chamfer-light);
+  box-shadow: var(--hardware-raised);
+  backdrop-filter: blur(20px) saturate(180%);
+  background-image: radial-gradient(120px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), var(--spatial-indicator), var(--optical-clear));
+}
+[data-hardware-ui] :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="hidden"]):not([type="file"]), textarea, select):not([data-profile-theme] *):not(.infra-command *):not([data-qr-container] *) {
+  background-color: var(--hardware-cavity); border-color: var(--hardware-edge); border-bottom-color: var(--chamfer-light); box-shadow: var(--hardware-recessed);
+}
+[data-hardware-ui] :where([class~="bg-card"][class~="border"], [class~="bg-card/50"][class~="border"]):not([data-profile-theme] *):not([data-profile-theme]):not([data-qr-container]):not([data-qr-container] *):not(.preview-sheet *):not(.story-product-stage *):not(input):not(button) {
+  background: var(--acrylic-base); border-color: var(--hardware-edge); border-top-color: var(--chamfer-light); box-shadow: none; backdrop-filter: blur(24px) saturate(150%);
+  background-image: radial-gradient(260px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), color-mix(in oklab, var(--cursor-light) 5%, transparent), var(--optical-clear));
+}
