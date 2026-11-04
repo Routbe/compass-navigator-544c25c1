@@ -12,6 +12,7 @@ import { configureTextBuilder } from "troika-three-text";
 import { BACK_QR, CARD_RATIO, FACE_H, FACE_W, type CardFaces, type QrBox } from "./card-faces";
 import { MAX_TILT_RAD, SPIN_SNAP_SPEED, clampDragPitch, clampTilt, decaySpin, isBackFace, lerpDamp, nearestFace, stepSpring, tiltTarget, type Spring } from "./card-physics";
 import { createSecurityMaterial } from "./card-shader";
+import { captureCardSnapshot } from "./card-snapshot";
 
 // Troika's nested blob importScripts conflicts with our strict script-src.
 // Typeset once on the main thread; keep the same GPU SDF rendering and CSP.
@@ -108,6 +109,7 @@ type CardProps = {
   drag?: DragRef;
   /** Called when a grab-spin settles on the other face. */
   onFace?: (back: boolean) => void;
+  snapshotRef?: MutableRefObject<(() => string) | null>;
   text: { displayName: string; handle: string; subheader: string; fg: string; sovereignId: string; code: string | null };
 };
 
@@ -336,7 +338,7 @@ function Card({ faces, finish, pbr, flipped, tilt, live, zoom, secure, onFlip, d
   const slotY = qy + qrSize + 80 + 40;
 
   return (
-    <group ref={group} onClick={(e) => { e.stopPropagation(); if (e.delta < 6 && zoom.current <= 0.02) onFlip(); }}>
+    <group name="rout-card-body" ref={group} onClick={(e) => { e.stopPropagation(); if (e.delta < 6 && zoom.current <= 0.02) onFlip(); }}>
       <mesh geometry={body}>
         <meshPhysicalMaterial color="#26262b" metalness={0.95} roughness={0.32} clearcoat={0.4} />
       </mesh>
@@ -389,6 +391,32 @@ function ReadySignal({ onReady, glyphs }: { onReady: () => void; glyphs: Mutable
   return null;
 }
 
+function SnapshotBridge({ snapshotRef }: { snapshotRef: MutableRefObject<(() => string) | null> }) {
+  const { gl, scene, camera } = useThree();
+  useEffect(() => {
+    snapshotRef.current = () => {
+      const card = scene.getObjectByName("rout-card-body");
+      if (!card) throw new Error("Card not ready");
+      const rotation = card.rotation.clone(), position = card.position.clone();
+      const cameraPosition = camera.position.clone(), cameraRotation = camera.quaternion.clone();
+      try {
+        // Static front only: never export the private, rotating code on the back.
+        card.rotation.set(0, 0, 0);
+        card.position.set(0, 0, 0);
+        camera.position.set(0, 0, CAMERA_FAR);
+        camera.lookAt(0, 0, 0);
+        return captureCardSnapshot(gl, scene, camera);
+      } finally {
+        card.rotation.copy(rotation); card.position.copy(position);
+        camera.position.copy(cameraPosition); camera.quaternion.copy(cameraRotation);
+        gl.render(scene, camera);
+      }
+    };
+    return () => { snapshotRef.current = null; };
+  }, [gl, scene, camera, snapshotRef]);
+  return null;
+}
+
 /** Native resolution, supersampled to at least 2x so sub-pixel engraving resolves; capped at 3x. */
 function renderDpr(): number {
   const native = typeof window === "undefined" ? 2 : window.devicePixelRatio || 1;
@@ -413,6 +441,7 @@ export default function RoutCard3D(props: CardProps & { onReady: () => void }) {
       </Environment>
       <Card {...card} glyphs={glyphs} />
       <ReadySignal onReady={onReady} glyphs={glyphs} />
+      {card.snapshotRef && <SnapshotBridge snapshotRef={card.snapshotRef} />}
     </Canvas>
   );
 }

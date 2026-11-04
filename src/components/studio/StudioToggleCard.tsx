@@ -16,7 +16,7 @@ export function StudioToggleCard({ icon, title, subtitle, checked, onCheckedChan
   id?: string;
 }) {
   return (
-    <details id={id} className="group rounded-2xl border border-border bg-card px-4 py-2 sm:px-5">
+    <details id={id} className="acrylic-card group px-4 py-2 sm:px-5">
       <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 [&::-webkit-details-marker]:hidden">
         <span className="shrink-0">{icon}</span>
         <span className="min-w-0 flex-1 text-left">

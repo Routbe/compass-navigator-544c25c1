@@ -1,17 +1,12 @@
-import { useState, type PointerEvent, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { BadgeCheck, Play } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { cn } from "@/lib/utils";
 
 /** Card wrapper with a cursor-following radial glow (CSS vars, no re-render). */
 export function GlowCard({ children, className }: { children: ReactNode; className?: string }) {
-  const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
   return (
-    <div onPointerMove={onMove} className={cn("glow-card", className)}>
+    <div className={cn("glow-card", className)}>
       {children}
     </div>
   );

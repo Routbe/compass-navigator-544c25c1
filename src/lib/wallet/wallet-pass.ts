@@ -222,6 +222,7 @@ export function googleCardObject(card: WalletCardPayload, issuerId: string, clas
     classId,
     state: "ACTIVE",
     hexBackgroundColor: card.hexBackgroundColor,
+    logo: { sourceUri: { uri: new URL("/icon-192.png", card.url).href }, contentDescription: i18n("ROUT") },
     cardTitle: i18n("ROUT"),
     header: i18n(`@${card.handle}`),
     subheader: i18n(card.subheader),
@@ -248,7 +249,10 @@ export function googleCardSaveClaims(card: WalletCardPayload, cfg: { issuerId: s
     aud: "google",
     typ: "savetowallet",
     origins: cfg.origins,
-    payload: { genericClasses: [{ id: object.classId }], genericObjects: [object] },
+    payload: { genericClasses: [{ id: object.classId, classTemplateInfo: { cardTemplateOverride: { cardRowTemplateInfos: [{ twoItems: {
+      startItem: { firstValue: { fields: [{ fieldPath: "object.textModulesData['name']" }] } },
+      endItem: { firstValue: { fields: [{ fieldPath: "object.textModulesData['card']" }] } },
+    } }] } } }], genericObjects: [object] },
   };
 }
 

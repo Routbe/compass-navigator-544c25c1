@@ -1,7 +1,7 @@
 import { Component, lazy, Suspense, useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, RotateCw, ShieldCheck, Smartphone, UserPlus, Wallet, ZoomIn, ZoomOut } from "lucide-react";
+import { Camera, Loader2, RotateCw, ShieldCheck, Smartphone, UserPlus, Wallet, ZoomIn, ZoomOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GYRO_CALIBRATION_SAMPLES, GYRO_REST_MS, filterGyro, orientationToDegrees, orientationToTilt, SPIN_PER_FRAME_WIDTH, zoomFromWheel, zoomFromPinch, clampPan, clampZoom } from "./card-physics";
 import { toast } from "sonner";
@@ -77,6 +77,7 @@ export function RoutCardDialog({ open, onOpenChange, handle, space }: { open: bo
   const live: LiveRef = useRef({ seed: [0.5, 0.5, 0.5, 0.5], expiresAt: 0, windowMs: 30_000 });
   const zoom: ZoomRef = useRef(0);
   const stage = useRef<HTMLDivElement>(null);
+  const snapshotRef = useRef<(() => string) | null>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinch = useRef<{ dist: number; z: number; mx: number; my: number } | null>(null);
   const drag: DragRef = useRef({ down: false, dx: 0, dy: 0 });
@@ -419,8 +420,8 @@ export function RoutCardDialog({ open, onOpenChange, handle, space }: { open: bo
     const x = ((e.clientX - r.left) / r.width) * 2 - 1;
     const y = -(((e.clientY - r.top) / r.height) * 2 - 1);
     tilt.current = { x, y, at: performance.now() };
-    setFlatTilt({ x, y });
-  }, [setZoom]);
+    if (webgl === false) setFlatTilt({ x, y });
+  }, [setZoom, webgl]);
 
   const flip = () => {
     tilt.current = { ...tilt.current, at: performance.now() };
@@ -487,6 +488,19 @@ export function RoutCardDialog({ open, onOpenChange, handle, space }: { open: bo
     }
   };
 
+  const saveSnapshot = () => {
+    try {
+      const png = webgl ? snapshotRef.current?.() : images?.front;
+      if (!png) return;
+      const link = document.createElement("a");
+      link.href = png;
+      link.download = `rout-${handle}-snapshot.png`;
+      link.click();
+    } catch {
+      toast.error(t("card.snapshotFailed", { defaultValue: "De kaartfoto kon niet worden gemaakt." }));
+    }
+  };
+
   const flat = images ? <FlatCard faces={images} flipped={flipped} tilt={flatTilt} onFlip={flip} /> : null;
 
   return (
@@ -529,6 +543,7 @@ export function RoutCardDialog({ open, onOpenChange, handle, space }: { open: bo
                   onFlip={flip}
                   drag={drag}
                   onFace={setFlipped}
+                  snapshotRef={snapshotRef}
                   onReady={() => setReady(true)}
                   text={{ displayName: styledCard!.displayName, handle: card!.handle, subheader: styledCard && "regionDisplay" in styledCard && styledCard.regionDisplay ? styledCard.regionDisplay : card!.subheader, fg: styledCard!.hexForegroundColor, sovereignId: card!.sovereignId, code }}
                 />
@@ -541,6 +556,7 @@ export function RoutCardDialog({ open, onOpenChange, handle, space }: { open: bo
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
           <Button type="button" size="sm" variant="ghost" className="gap-1.5" onClick={flip}><RotateCw className="h-3.5 w-3.5" aria-hidden /> {t("card.flip")}</Button>
+          <Button type="button" size="icon" variant="ghost" disabled={!ready || !card} onClick={saveSnapshot} aria-label={t("card.snapshot", { defaultValue: "Kaartfoto downloaden" })} title={t("card.snapshot", { defaultValue: "Kaartfoto downloaden" })}><Camera className="h-4 w-4" aria-hidden /></Button>
           {webgl && faces && (
             <Button type="button" size="sm" variant="ghost" className="gap-1.5" onClick={toggleZoom} aria-pressed={zoomed}>
               {zoomed ? <ZoomOut className="h-3.5 w-3.5" aria-hidden /> : <ZoomIn className="h-3.5 w-3.5" aria-hidden />} {t("card.zoom", { defaultValue: "Loep" })}

@@ -114,7 +114,7 @@ function Widget({
     </>
   );
   const cls = cn(
-    "group flex min-w-0 flex-col rounded-2xl border border-border bg-card p-5 transition-colors",
+    "acrylic-card group flex min-w-0 flex-col p-5 transition-colors",
     to && "hover:border-border-ink",
     className,
   );

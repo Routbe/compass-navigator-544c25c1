@@ -1,4 +1,5 @@
 import { CommandPalette } from "@/components/CommandPalette";
+import { useLiquidGlassRuntime } from "@/components/glass/LiquidGlass";
 import { TourHost } from "@/components/tour/TourHost";
 import { InAppBrowserBanner } from "@/components/pwa/InAppBrowserBanner";
 import { IosInstallHint } from "@/components/pwa/IosInstallHint";
@@ -191,6 +192,7 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
+  useLiquidGlassRuntime();
   const { queryClient } = Route.useRouteContext();
   const router = useRouter();
 
