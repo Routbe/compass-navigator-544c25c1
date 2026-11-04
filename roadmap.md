@@ -1,4 +1,6 @@
 # Repository import
+- [ ] Upgrade homepage to the uploaded Neon-inspired infrastructure brief: four product pillars, integration mesh, recessed input, tactile actions, engineering canvas and unified language/navigation surface.
+- [ ] Verify Neon role availability read-only; do not change credentials or database privileges.
 - [x] Import ROUT source, assets, documentation, and dependencies without credentials or repository metadata.
 - [x] Verify public pages, menus, scrolling, command routing, and QR generation on desktop and phone.
 - [x] Run relevant tests and check preview errors (23 tests passed; build OK).
