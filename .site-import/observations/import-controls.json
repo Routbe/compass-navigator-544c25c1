@@ -1,0 +1,28 @@
+[
+  {
+    "layout": "desktop",
+    "menu": "passed",
+    "scroll": "passed",
+    "commandRouting": "http://localhost:8080/studio?mode=qr",
+    "errors": [],
+    "screenshots": [
+      "/tmp/browser/compass-import/desktop-menu.png",
+      "/tmp/browser/compass-import/desktop-ecosystem.png",
+      "/tmp/browser/compass-import/desktop-bottom.png",
+      "/tmp/browser/compass-import/desktop-studio.png"
+    ]
+  },
+  {
+    "layout": "phone",
+    "menu": "passed",
+    "scroll": "passed",
+    "commandRouting": "http://localhost:8080/studio?mode=qr",
+    "errors": [],
+    "screenshots": [
+      "/tmp/browser/compass-import/phone-menu.png",
+      "/tmp/browser/compass-import/phone-ecosystem.png",
+      "/tmp/browser/compass-import/phone-bottom.png",
+      "/tmp/browser/compass-import/phone-studio.png"
+    ]
+  }
+]
