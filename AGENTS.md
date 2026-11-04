@@ -22,3 +22,4 @@
 - HeaderControls owns only shared hover/focus artwork; invite, account and tool controls retain their own auth guards and modal semantics because decoration must never initiate navigation.
 - Haptics are best-effort, respect reduced motion and never gate an action because unsupported devices must retain identical behavior.
 - Homepage infrastructure visuals are illustrative and translated through per-page locale bundles; Wallet previews reuse the public card-face renderer because product claims and brand artwork must reflect existing ROUT behavior.
+- Long-form homepage chapters use independent product scenes and shared locale bundles; shared hardware primitives own control materials while SpatialChoice only decorates controlled selections because presentation must not change account actions or public artwork.
