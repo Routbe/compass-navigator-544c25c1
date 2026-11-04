@@ -63,6 +63,7 @@ export function LiquidGlassFilters({ tokens }: { tokens: readonly LensTokens[] }
 }
 
 let installed = 0;
+let disposeRuntime: (() => void) | null = null;
 const SURFACE = '[style*="--lg-filter"], [style*="--lg-x"], [data-liquid-glass], .acrylic-card, .spatial-glass, .glow-card, [role="tab"]';
 
 function supportsSvgBackdrop(): boolean {
@@ -74,7 +75,11 @@ function supportsSvgBackdrop(): boolean {
 export function useLiquidGlassRuntime() {
   useEffect(() => {
     installed += 1;
-    if (installed > 1) return () => { installed -= 1; };
+    const release = () => {
+      installed -= 1;
+      if (installed === 0) { disposeRuntime?.(); disposeRuntime = null; }
+    };
+    if (installed > 1) return release;
     const root = document.documentElement;
     if (supportsSvgBackdrop()) root.dataset["liquid"] = "1";
     let frame = 0;
@@ -105,12 +110,12 @@ export function useLiquidGlassRuntime() {
       if (!frame) frame = requestAnimationFrame(apply);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      installed -= 1;
+    disposeRuntime = () => {
       window.removeEventListener("pointermove", onMove);
       observer.disconnect();
       if (frame) cancelAnimationFrame(frame);
       delete root.dataset["liquid"];
     };
+    return release;
   }, []);
 }
