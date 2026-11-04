@@ -23,3 +23,5 @@
 - Haptics are best-effort, respect reduced motion and never gate an action because unsupported devices must retain identical behavior.
 - Homepage infrastructure visuals are illustrative and translated through per-page locale bundles; Wallet previews reuse the public card-face renderer because product claims and brand artwork must reflect existing ROUT behavior.
 - Long-form homepage chapters use independent product scenes and shared locale bundles; shared hardware primitives own control materials while SpatialChoice only decorates controlled selections because presentation must not change account actions or public artwork.
+- Homepage WebGL is dynamically imported after hydration, uses one R3F canvas and the existing glass pointer scheduler, pauses offscreen/when hidden and respects reduced motion; original shaders and public-domain Natural Earth geometry avoid unlicensed shader copies and duplicate rendering engines.
+- Portal surfaces carry their own hardware scope because dialogs, sheets and drawers are mounted outside AppLayout; button labels may wrap while icon controls retain fixed dimensions to prevent mobile overlap.

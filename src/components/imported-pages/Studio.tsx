@@ -107,17 +107,17 @@ export default function Studio({ initialGrid = false }: { initialGrid?: boolean 
       ) : (
         <div className="relative flex flex-1 flex-col space-y-6 pb-8">
           {/* Profile switcher: Privacy Alias and Verified Profile are two separate canvases. */}
-          <div data-tour="studio-pages" role="tablist" aria-label={t("studio.mode.pages")} className="!mt-0 flex flex-nowrap gap-1 rounded-full bg-transparent p-0.5 pr-7 md:flex-wrap md:gap-2 md:p-1">
+          <div data-tour="studio-pages" role="tablist" aria-label={t("studio.mode.pages")} className="spatial-profile-tabs !mt-0 grid grid-cols-2 gap-1 rounded-lg p-1">
             {tabs.map(({ id, label, hint, Icon, locked }) => {
               const selected = variant === id;
               const select = () => { setVariant(id); setPageMode("profile"); };
-              const trigger = <Button variant="ghost" type="button" role="tab" aria-selected={selected} aria-pressed={selected} onClick={select} className={`h-9 min-w-0 flex-1 md:h-auto md:min-h-12 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left shadow-none ${selected ? "bg-foreground text-background hover:bg-foreground hover:text-background" : "bg-transparent text-muted-foreground hover:bg-secondary/60 hover:text-foreground"}`}>
+              const trigger = <Button variant="ghost" type="button" role="tab" aria-selected={selected} aria-pressed={selected} onClick={select} className={`min-h-12 h-auto min-w-0 flex-1 md:min-h-14 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left shadow-none ${selected ? "text-foreground" : "bg-transparent text-muted-foreground hover:text-foreground"}`}>
                 <Icon className="size-4 shrink-0" />
                 <span className="min-w-0 flex-1"><span className="block text-sm font-medium">{label}</span><span className="hidden break-all font-mono text-xs opacity-70 md:block">{selected ? tabUrl(id) ?? hint : hint}</span></span>
                 {locked && <Lock className="size-3.5 shrink-0" aria-label={t("studio.common.locked")} />}
               </Button>;
               if (!selected || locked || (id !== "verified" && !pages.qaEnabled)) return <div key={id} className="flex min-w-0 flex-1">{trigger}</div>;
-              return <DropdownMenu key={id}><DropdownMenuTrigger asChild><Button variant="ghost" role="tab" aria-selected aria-label={t("studio.mode.pages")} className="h-9 min-w-0 flex-1 md:h-auto md:min-h-12 justify-start gap-2 whitespace-normal rounded-lg bg-foreground px-3 py-2 text-left text-background hover:bg-foreground hover:text-background">
+              return <DropdownMenu key={id}><DropdownMenuTrigger asChild><Button variant="ghost" role="tab" aria-selected aria-label={t("studio.mode.pages")} className="min-h-12 h-auto min-w-0 flex-1 md:min-h-14 justify-start gap-2 whitespace-normal rounded-lg px-3 py-2 text-left text-foreground">
                 {(() => { const M = modeIcon(pageMode, Icon); return <M className="size-4 shrink-0" />; })()}<span className="min-w-0 flex-1"><span className="block text-sm font-medium">{modeLabel(pageMode, label)}</span><span className="hidden break-all font-mono text-xs opacity-70 md:block">{tabUrl(id) ?? hint}{modeSuffix(pageMode)}</span></span><ChevronDown className="size-4 shrink-0" />
               </Button></DropdownMenuTrigger><DropdownMenuContent align="start" className="w-72 max-w-[calc(100vw-24px)]">
                 {(["profile", "tip", "booking", "qa"] as const).filter(mode => (mode !== "tip" || pages.tipEnabled) && (mode !== "qa" || pages.qaEnabled) && (mode !== "booking" || id === "verified")).map(mode => { const M = modeIcon(mode, BadgeCheck); return <DropdownMenuItem key={mode} onSelect={() => setPageMode(mode)}><M className="size-4" /><span className="flex-1">{modeLabel(mode, t("studio.mode.profile"))}</span>{pageMode === mode && <Check className="size-4" />}</DropdownMenuItem>; })}

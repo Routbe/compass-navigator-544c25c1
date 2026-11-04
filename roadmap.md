@@ -1,4 +1,7 @@
 # Repository import
+- [ ] Replace opening QR photo with a client-only dot globe and shader streams representing ROUT identity; relocate QR photograph and pair card artwork with meaningful text.
+- [ ] Repair named QR Studio, profile discovery, invitation and mobile content controls; audit sibling control material bypasses without changing actions.
+- [ ] Verify new scene, motion settings, card copy and public controls at desktop and phone sizes; run focused tests.
 - [x] Rebuild homepage: nine product chapters, 16,500px desktop versus Neon’s measured 10,826px, full-width photography, scroll reveals and the accepted card image in chapter five; NL/EN/FR/DE copy.
 - [x] Audit all TSX/JSX source folders (381 raw buttons in 174 files); update shared controls, Studio/Live Presence selectors and scoped legacy material rules; preserve QR artwork, provider marks and member themes.
 - [x] Verify desktop/mobile homepage without overflow, locale switches, live QR-type changes, cursor variables and reduced motion; public QR generation works; focused tests pass. Account-only visual verification remains blocked by unavailable session/configuration.

@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { SpatialChoice } from "@/components/ui/spatial-choice";
 import { cn } from "@/lib/utils";
 import { NoneGlyph } from "./NoneGlyph";
 import { SelectionIndicator } from "./SelectionIndicator";
@@ -221,36 +223,12 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
     [filter],
   );
 
+  const selectedPreset = themePresets.find((theme) => theme.id === selectedTheme);
   return (
     <div className="space-y-2">
-      <PickerAnnouncer
-        message={
-          themePresets.find((t) => t.id === selectedTheme)
-            ? `${themePresets.find((t) => t.id === selectedTheme)!.name} theme selected`
-            : ""
-        }
-      />
-
-      <div
-        data-testid="theme-filters"
-        className="-mx-1 flex snap-x snap-mandatory gap-1.5 overflow-x-auto px-1 pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            onClick={() => setFilter(f.id)}
-            aria-pressed={filter === f.id}
-            className={cn(
-              "shrink-0 snap-start rounded-full border px-3 py-1 text-[11px] font-medium transition-transform duration-150 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-              filter === f.id
-                ? "border-foreground bg-foreground text-background"
-                : "border-border text-muted-foreground hover:bg-muted/60 hover:text-foreground",
-            )}
-          >
-            {f.label}
-          </button>
-        ))}
+      <PickerAnnouncer message={selectedPreset ? `${selectedPreset.name} theme selected` : ""} />
+      <div data-testid="theme-filters" className="min-w-0 overflow-x-auto pb-1">
+        <SpatialChoice value={filter} onChange={setFilter} label="Themacategorie" options={FILTERS.map(f => ({ value: f.id, label: f.label }))} className="w-max min-w-full" />
       </div>
 
       <div
@@ -266,7 +244,7 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
         {visible.map((theme) => {
           const selected = selectedTheme === theme.id;
           return (
-            <button
+            <Button variant="outline"
               key={theme.id}
               type="button"
               onClick={() => onThemeChange(theme)}
@@ -276,14 +254,14 @@ export function ThemePresets({ selectedTheme, onThemeChange }: ThemePresetsProps
               aria-label={theme.name}
               tabIndex={selected ? 0 : -1}
               className={cn(
-                "relative flex h-16 w-full min-w-0 flex-col items-center justify-center gap-1 overflow-visible rounded-xl border-2 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-                selected ? "border-foreground bg-muted/60" : "border-border hover:bg-secondary",
+                "spatial-choice-tile relative flex h-20 w-full min-w-0 flex-col items-center justify-center gap-2 overflow-visible rounded-lg px-2 py-2 text-xs font-medium",
+                selected ? "border-chamfer-light" : "border-hardware-edge",
               )}
             >
               <SelectionIndicator visible={selected} />
               <ThemeSwatch theme={theme} />
               <span className="w-full truncate px-1 text-center">{theme.name}</span>
-            </button>
+            </Button>
           );
         })}
       </div>
