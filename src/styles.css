@@ -1818,3 +1818,48 @@ html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !im
   background: var(--acrylic-base); border-color: var(--hardware-edge); border-top-color: var(--chamfer-light); box-shadow: none; backdrop-filter: blur(24px) saturate(150%);
   background-image: radial-gradient(260px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), color-mix(in oklab, var(--cursor-light) 5%, transparent), var(--optical-clear));
 }
+
+/* Sovereign identity stage: unframed, one canvas, original GPU streams. */
+.infra-home { --sovereign-ink: #e4f7f3; --sovereign-emerald: #64dcad; --sovereign-cyan: #7edce9; }
+.infra-hero { min-height: 760px; }
+.infra-hero::after { display: none; }
+.infra-hero-content { min-height: 500px; align-items: center; text-align: center; padding-top: 42px; padding-bottom: 40px; }
+.infra-hero-content > p, .infra-hero-content > h1 { max-width: 720px; }
+.infra-hero-content > p:first-child { letter-spacing: .2em; }
+.infra-hero-content .omni-bar { max-width: 550px; }
+.infra-hero-content .omni-bar > p { justify-content: center; }
+.sovereign-scene { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.sovereign-scene > div:last-child { position: absolute !important; inset: 0; }
+.sovereign-fallback { position: absolute; width: 460px; height: 460px; border: 1px dotted var(--infra-edge); border-radius: 50%; left: 50%; bottom: -180px; transform: translateX(-50%); }
+[data-scene-ready] .sovereign-fallback { display: none; }
+.sovereign-domains { position: absolute; bottom: 40px; left: 0; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; font: 10px var(--font-mono); color: var(--color-muted-foreground); }
+.story-card-photograph { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; gap: 40px; }
+.story-card-photograph img { aspect-ratio: 1.25; object-fit: cover; }
+.story-card-copy { min-width: 0; }
+.story-card-copy h3 { font: 36px/1.15 var(--font-display); margin-block: 20px; }
+.story-card-copy > p:not(.story-small-label) { font-size: 14px; line-height: 1.9; color: var(--color-muted-foreground); margin-bottom: 25px; }
+.spatial-choice-tile { background-color: var(--spatial-base); }
+.spatial-choice-tile[aria-checked="true"], .spatial-button[aria-pressed="true"] { background-color: var(--spatial-indicator); border-color: var(--chamfer-light); color: var(--color-foreground); }
+.spatial-profile-tabs { background: var(--hardware-cavity); border: 1px solid var(--hardware-edge); box-shadow: var(--hardware-recessed); }
+.spatial-profile-tabs [role="tab"][aria-selected="true"] { background: var(--hardware-metal); color: var(--color-foreground); box-shadow: var(--hardware-raised); border: 1px solid var(--hardware-edge); }
+.spatial-dialog, .spatial-sheet { min-width: 0; }
+.spatial-dialog > *, .spatial-sheet > * { min-width: 0; }
+.spatial-dialog button, .spatial-sheet button { max-width: 100%; }
+@media (min-width: 640px) and (max-height: 700px) {
+  .infra-hero { min-height: 500px; }
+  .infra-hero-content { min-height: 390px; padding-block: 18px 75px; }
+  .infra-hero .infra-title { font-size: 58px; }
+  .infra-hero-content .omni-bar { margin-top: 18px; }
+  .sovereign-domains { bottom: 24px; }
+}
+@media (max-width: 639px) {
+  .infra-hero { min-height: 750px; }
+  .infra-hero-content { min-height: 600px; padding-top: 35px; padding-bottom: 100px; }
+  .infra-hero .infra-title { font-size: 72px; }
+  .infra-hero-content > p { max-width: 340px; }
+  .infra-hero-content .omni-bar > p { justify-content: flex-start; text-align: left; }
+  .sovereign-domains { gap: 12px 22px; padding-inline: 24px; bottom: 28px; }
+  .story-card-photograph { grid-template-columns: 1fr; gap: 26px; }
+  .story-card-photograph img { aspect-ratio: 1.4; }
+  .story-card-copy h3 { font-size: 30px; }
+}
