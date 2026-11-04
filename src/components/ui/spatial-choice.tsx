@@ -22,10 +22,22 @@ export function SpatialChoice<T extends string>({ value, options, onChange, labe
       role={role === "tablist" ? "tab" : undefined}
       aria-selected={role === "tablist" ? value === option.value : undefined}
       aria-pressed={role === "group" ? value === option.value : undefined}
+      tabIndex={role === "tablist" ? (value === option.value ? 0 : -1) : undefined}
       disabled={disabled || option.disabled} title={option.title}
       onPointerEnter={() => { if (!disabled && !option.disabled) setHovered(option.value); }}
       onFocus={() => setHovered(option.value)} onBlur={() => setHovered(null)}
       onClick={() => onChange(option.value)}
+      onKeyDown={(event) => {
+        if (role !== "tablist" || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const available = options.filter((item) => !item.disabled);
+        const index = available.findIndex((item) => item.value === option.value);
+        const next = event.key === "Home" ? available[0] : event.key === "End" ? available.at(-1) : available[(index + (event.key === "ArrowRight" ? 1 : -1) + available.length) % available.length];
+        if (!next || disabled) return;
+        const target = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[options.findIndex((item) => item.value === next.value)];
+        target?.focus();
+        onChange(next.value);
+      }}
       className={cn("spatial-tab min-w-0 flex-1 px-3 text-xs", value === option.value ? "text-foreground" : "text-muted-foreground")}>
       {(hovered ?? value) === option.value && <motion.span aria-hidden className="spatial-indicator" layoutId={`choice-${id}`} transition={reduced ? { duration: 0 } : premiumSpringPreset} />}
       {option.label}
