@@ -5,8 +5,12 @@
 - [ ] Account/data features: blocked until the original services are configured; no data migration authorized.
 
 ## Spatial Studio transformation
-- [ ] Research supplied repositories and compare uploaded requirements with existing engines.
-- [ ] Apply acrylic containers, shared hover indicators, spatial account popovers and global cursor illumination.
-- [ ] Improve card snapshot capture and official Google Wallet presentation without changing ownership rules.
-- [ ] Complete or identify remaining procedural typography and glass customization gaps from uploads.
-- [ ] Run focused tests and desktop/phone checks; report unavailable authenticated or external Wallet verification.
+- [x] Research supplied repositories and compare uploaded requirements with existing engines.
+- [x] Apply acrylic containers, shared hover indicators, spatial account popovers and global cursor illumination.
+- [x] Implement public-front 3x WebGL PNG capture with renderer/camera restoration and official Google Wallet logo/class row layout.
+- [x] Expose existing gradient, shadow, elemental and reveal preferences in the typography editor; retain existing glass recipes and live controls.
+- [ ] Connect live 3D artwork as Wallet heroImage: blocked by absent object-storage credentials and Google Wallet issuer configuration.
+- [ ] Replace CSS profile-name effects with the full requested GPU elemental typography engine; not implemented in this pass.
+- [ ] Authenticated Studio/popover/card end-to-end verification: blocked by absent account signing configuration and no available signed-in session.
+- [ ] Switch Neon to dedicated rout_app role: connection currently uses neondb_owner; the connection owner must supply the restricted role through the secure connection settings, no database privileges changed.
+- [x] Verify global cursor coordinates and public layouts on desktop/phone; focused tests and build checks passed.

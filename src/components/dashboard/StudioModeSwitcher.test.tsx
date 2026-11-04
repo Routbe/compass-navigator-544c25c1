@@ -21,4 +21,11 @@ describe("editable page destinations", () => {
     fireEvent.click(screen.getByRole("tab", { name: /studio.mode.profile/ }));
     expect(change).toHaveBeenCalledWith("profile");
   });
+  it("hovering another destination never switches the selected page", () => {
+    const change = vi.fn();
+    const { unmount } = render(<StudioModeSwitcher mode="profile" enabled handle="anna" onChange={change} />);
+    fireEvent.pointerEnter(screen.getAllByRole("tab", { name: /studio.mode.tip/ }).at(-1) as HTMLElement);
+    expect(change).not.toHaveBeenCalled();
+    unmount();
+  });
 });
