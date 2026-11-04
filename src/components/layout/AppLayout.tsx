@@ -21,6 +21,7 @@ import { startTour } from "@/lib/tour/progress";
 import { usePortalFrame } from "./PortalContext";
 import { useHeaderReveal } from "@/hooks/useHeaderReveal";
 import { useReveal } from "@/hooks/useReveal";
+import { HeaderControls } from "./HeaderControls";
 
 export interface Crumb {
   label: string;
@@ -142,9 +143,11 @@ export function AppLayout({
               {t("explore.crumb")}
             </Link>
             <LanguageToggle className="hidden sm:inline-flex" />
-            <InviteButton />
-            <ProfileMenu />
-            <MobileMenu />
+            <HeaderControls>
+              <InviteButton />
+              <ProfileMenu />
+              <MobileMenu />
+            </HeaderControls>
           </div>
         </div>
       </header>

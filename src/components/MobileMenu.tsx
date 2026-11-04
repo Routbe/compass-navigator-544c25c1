@@ -16,6 +16,9 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { Link } from "@/lib/router-compat";
 import type { LucideIcon } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
+import { HeaderControl } from "@/components/layout/HeaderControls";
+import { spatialHaptic } from "@/lib/spatial-haptics";
 
 const itemClass =
   "flex items-start gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground hover:bg-muted/60 transition-colors";
@@ -72,16 +75,16 @@ export function MobileMenu({ className }: { className?: string }) {
   const { t } = useI18n();
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger
+    <HeaderControl name="tools"><Sheet open={open} onOpenChange={(next) => { setOpen(next); spatialHaptic(); }}>
+      <SheetTrigger asChild><Button variant="ghost" size="icon"
         aria-label={t("menu.open")}
         className={
           className ??
-          "h-10 w-10 shrink-0 rounded-xl border border-border flex items-center justify-center transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          "h-10 w-10 shrink-0 rounded-full"
         }
       >
         <Menu className="h-5 w-5" strokeWidth={1.8} />
-      </SheetTrigger>
+      </Button></SheetTrigger>
       <SheetContent
         side="right"
         className="flex w-[86vw] max-w-xs flex-col overflow-y-auto bg-background"
@@ -102,6 +105,6 @@ export function MobileMenu({ className }: { className?: string }) {
           </div>
         </div>
       </SheetContent>
-    </Sheet>
+    </Sheet></HeaderControl>
   );
 }

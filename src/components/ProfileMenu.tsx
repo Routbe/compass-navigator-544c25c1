@@ -30,6 +30,8 @@ import { Shield, ArrowLeftRight, Check as CheckIcon, Plus as PlusIcon, User as U
 import { canUseDeveloperTools } from "@/lib/workspace-rules";
 import { getMyAccount } from "@/lib/account.functions";
 import { contextBadge, contextLinks, GLOBAL_ACCOUNT_LINK } from "@/lib/context-menu";
+import { HeaderControl } from "@/components/layout/HeaderControls";
+import { spatialHaptic } from "@/lib/spatial-haptics";
 
 /**
  * Account context only. Platform tools live in the burger menu so the two
@@ -107,9 +109,9 @@ export function ProfileMenu() {
     // On the auth portal itself the header CTAs are redundant noise.
     if (pathname.startsWith("/auth") || pathname.startsWith("/login")) return null;
     return (
-      <Button asChild size="sm">
+      <HeaderControl name="account"><Button asChild size="sm" variant="ghost">
         <Link to="/auth/sign-in">{trI18n.t("nav.signIn")}</Link>
-      </Button>
+      </Button></HeaderControl>
     );
   }
 
@@ -128,12 +130,13 @@ export function ProfileMenu() {
 
   return (
     <div className="flex items-center gap-3 sm:gap-4">
-      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+      <HeaderControl name="account"><DropdownMenu open={menuOpen} onOpenChange={(open) => { setMenuOpen(open); spatialHaptic(); }}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost"
             type="button"
             aria-label="Account menu"
-            className="spatial-account-trigger flex h-9 shrink-0 items-center gap-2 rounded-lg pl-1 pr-2"
+            title={displayName}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full p-0"
           >
             <UserAvatar
               src={avatarUrl}
@@ -142,8 +145,6 @@ export function ProfileMenu() {
               textClassName="text-[11px]"
               rounded="rounded-lg"
             />
-            <span className="hidden max-w-[9rem] truncate text-sm sm:inline">{displayName}</span>
-            <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" aria-hidden />
           </Button>
         </DropdownMenuTrigger>
 
@@ -222,7 +223,7 @@ export function ProfileMenu() {
             <LogOut className="h-4 w-4 shrink-0" aria-hidden /> Uitloggen
           </DropdownMenuItem>
         </SpatialDropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu></HeaderControl>
     </div>
   );
 }
