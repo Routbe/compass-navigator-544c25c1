@@ -156,6 +156,14 @@ textarea[data-tour^="cc-"] {
 
 :root {
   color-scheme: light;
+  --acrylic-base: oklch(0.99 0.003 100 / 0.68);
+  --spatial-base: oklch(0.99 0.003 100 / 0.78);
+  --hardware-edge: oklch(0.55 0.01 155 / 0.28);
+  --chamfer-light: oklch(1 0 0 / 0.95);
+  --chamfer-fade: oklch(1 0 0 / 0.08);
+  --cursor-light: oklch(0.83 0.06 160 / 0.65);
+  --spatial-indicator: oklch(0.8 0.03 155 / 0.22);
+  --optical-clear: oklch(1 0 0 / 0);
   --tour-scrim: 30 6% 7% / 0.55;
   /* Warm Paper #FBF9F5 */
   --background: 40 43% 97%;
@@ -237,6 +245,13 @@ textarea[data-tour^="cc-"] {
 
 .dark {
   color-scheme: dark;
+  --acrylic-base: oklch(0.2 0.008 155 / 0.68);
+  --spatial-base: oklch(0.19 0.008 155 / 0.8);
+  --hardware-edge: oklch(0.85 0.015 155 / 0.2);
+  --chamfer-light: oklch(1 0 0 / 0.58);
+  --chamfer-fade: oklch(1 0 0 / 0.025);
+  --cursor-light: oklch(0.9 0.035 160 / 0.62);
+  --spatial-indicator: oklch(0.8 0.025 155 / 0.14);
   /* Resolve semantic utilities at a nested dark frame, not the light root. */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -440,7 +455,6 @@ textarea[data-tour^="cc-"] {
   z-index: 30;
   background: hsl(var(--background) / 0.92);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid hsl(var(--foreground) / 0.06);
 }
 
@@ -1420,6 +1434,63 @@ select:focus-visible {
 
 /* Liquid Glass lens: promoted only where SVG backdrop filters render (see LiquidGlass.tsx). */
 html[data-liquid] [style*="--lg-filter"] { backdrop-filter: var(--lg-filter) !important; }
+
+@utility acrylic-card {
+  position: relative;
+  isolation: isolate;
+  background: var(--acrylic-base);
+  backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--hardware-edge);
+  border-radius: 8px;
+  box-shadow: none;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: radial-gradient(180px circle at var(--mouse-x, 50%) var(--mouse-y, 0%), var(--cursor-light), var(--optical-clear) 75%), linear-gradient(165deg, var(--chamfer-light), var(--chamfer-fade) 48%, var(--optical-clear));
+    mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+    mask-composite: exclude;
+  }
+}
+@utility spatial-glass {
+  background: var(--spatial-base);
+  backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid var(--hardware-edge);
+  border-top-color: var(--chamfer-light);
+  border-radius: 8px;
+  box-shadow: none;
+  transform-origin: top right;
+}
+@utility spatial-account-trigger {
+  background: var(--acrylic-base);
+  backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--hardware-edge);
+  box-shadow: none;
+}
+@utility spatial-tab {
+  position: relative;
+  z-index: 0;
+  background: transparent;
+  box-shadow: none;
+}
+@utility spatial-indicator {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--spatial-indicator);
+  border: 1px solid var(--hardware-edge);
+  border-top-color: var(--chamfer-light);
+  pointer-events: none;
+}
+.spatial-glass [role^="menuitem"] { background: transparent; transition: color 120ms linear, filter 120ms linear; }
+.spatial-glass [role^="menuitem"]:is(:focus, [data-highlighted], [data-state="open"]) { background: transparent; color: var(--color-foreground); filter: brightness(1.18); }
+@supports not (backdrop-filter: blur(1px)) {
+  .acrylic-card, .spatial-glass { background: var(--color-card); }
+}
 
 /* Elemental Typography Engine (profile name). Real text; GPU-cheap gradients + filters. */
 @property --tt-p { syntax: "<number>"; inherits: true; initial-value: 1; }

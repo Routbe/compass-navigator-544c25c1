@@ -63,7 +63,7 @@ export function LiquidGlassFilters({ tokens }: { tokens: readonly LensTokens[] }
 }
 
 let installed = 0;
-const SURFACE = '[style*="--lg-filter"], [style*="--lg-x"], [data-liquid-glass]';
+const SURFACE = '[style*="--lg-filter"], [style*="--lg-x"], [data-liquid-glass], .acrylic-card, .spatial-glass, .glow-card, [role="tab"]';
 
 function supportsSvgBackdrop(): boolean {
   const nav = navigator as Navigator & { userAgentData?: { brands?: { brand: string }[] } };
@@ -79,15 +79,26 @@ export function useLiquidGlassRuntime() {
     if (supportsSvgBackdrop()) root.dataset["liquid"] = "1";
     let frame = 0;
     let last: PointerEvent | null = null;
+    let surfaces: HTMLElement[] = [];
+    let stale = true;
+    const observer = new MutationObserver(() => { stale = true; });
+    observer.observe(document.body, { childList: true, subtree: true });
     const apply = () => {
       frame = 0;
       const e = last;
       if (!e) return;
-      const el = (e.target as Element | null)?.closest?.(SURFACE) as HTMLElement | null;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--lg-x", `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-      el.style.setProperty("--lg-y", `${(((e.clientY - r.top) / r.height) * 100 - 60).toFixed(1)}%`);
+      if (stale) { surfaces = [...document.querySelectorAll<HTMLElement>(SURFACE)]; stale = false; }
+      // Read layout once per surface before writing any styles; no React updates.
+      const active = surfaces.map((el) => ({ el, r: el.getBoundingClientRect() })).filter(({ r }) =>
+        r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < window.innerHeight &&
+        e.clientX >= r.left - 180 && e.clientX <= r.right + 180 && e.clientY >= r.top - 180 && e.clientY <= r.bottom + 180);
+      for (const { el, r } of active) {
+        const x = e.clientX - r.left, y = e.clientY - r.top;
+        for (const name of ["--mouse-x", "--x", "--mx"]) el.style.setProperty(name, `${x.toFixed(1)}px`);
+        for (const name of ["--mouse-y", "--y", "--my"]) el.style.setProperty(name, `${y.toFixed(1)}px`);
+        el.style.setProperty("--lg-x", `${((x / r.width) * 100).toFixed(1)}%`);
+        el.style.setProperty("--lg-y", `${((y / r.height) * 100 - 60).toFixed(1)}%`);
+      }
     };
     const onMove = (e: PointerEvent) => {
       last = e;
@@ -97,6 +108,7 @@ export function useLiquidGlassRuntime() {
     return () => {
       installed -= 1;
       window.removeEventListener("pointermove", onMove);
+      observer.disconnect();
       if (frame) cancelAnimationFrame(frame);
       delete root.dataset["liquid"];
     };
