@@ -35,6 +35,7 @@ describe("ROUT Card wallet payload", () => {
     expect(o.hexBackgroundColor).toBe("#0d0d0d");
     expect(o.barcode).toMatchObject({ type: "QR_CODE", value: "https://rout.be/@jona" });
     expect(o.heroImage?.sourceUri.uri).toBe(root.heroImageUrl);
+    expect(o.logo.sourceUri.uri).toBe("https://rout.be/icon-192.png");
   });
 
   it("Apple pass shows the same QR and colours as Google", () => {

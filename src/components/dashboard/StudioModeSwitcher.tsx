@@ -10,7 +10,7 @@ type Mode = "profile" | "tip";
 /** Only offer switching when both editable destinations are available. */
 export function StudioModeSwitcher({ mode, onChange, handle, enabled = true }: { mode: Mode; onChange: (m: Mode) => void; handle: string; enabled?: boolean }) {
   const { t } = useI18n();
-  const id = useId();
+  const indicatorId = useId();
   const [hovered, setHovered] = useState<Mode | null>(null);
   const reduced = useReducedMotion();
   if (!enabled && mode === "profile") return null;
