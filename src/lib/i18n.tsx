@@ -141,6 +141,7 @@ function humaniseKey(key: string): string {
 if (!i18next.isInitialized) {
   void i18next.init({
     resources: RESOURCES,
+    initAsync: false,
     lng: "en",
     // English first, Dutch second: a missing FR/DE string never shows a key.
     fallbackLng: ["en", "nl"],

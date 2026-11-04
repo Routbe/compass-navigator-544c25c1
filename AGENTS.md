@@ -21,3 +21,4 @@
 - Google Wallet rows belong to GenericClass classTemplateInfo; GenericObject contains official branding fields only because unsupported payload properties are rejected.
 - HeaderControls owns only shared hover/focus artwork; invite, account and tool controls retain their own auth guards and modal semantics because decoration must never initiate navigation.
 - Haptics are best-effort, respect reduced motion and never gate an action because unsupported devices must retain identical behavior.
+- Homepage infrastructure visuals are illustrative and translated through per-page locale bundles; Wallet previews reuse the public card-face renderer because product claims and brand artwork must reflect existing ROUT behavior.
