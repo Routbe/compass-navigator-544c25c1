@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
 import { StudioSectionIcon } from "./StudioSectionIcon";
 import { useSnapchatCallback } from "./SnapchatPanel";
@@ -31,7 +32,7 @@ export function LiveStatusAccordion({ prefs, setPref, composer }: { prefs: Profi
   const { t } = useI18n();
   useSnapchatCallback();
   return (
-    <AccordionItem value="live_status" className="rounded-2xl border border-border bg-card px-4 sm:px-5">
+    <AccordionItem value="live_status" className="acrylic-card px-4 sm:px-5">
       <AccordionTrigger className="hover:no-underline">
         <span className="flex flex-1 items-center justify-between gap-3 pr-2">
           <span className="flex min-w-0 items-center gap-2 text-base font-medium"><StudioSectionIcon kind="live" />{t("studio.live.title").replace(/^\p{Extended_Pictographic}\s*/u, "")}</span>
@@ -71,7 +72,7 @@ function LiveIntegrationsPanel({ prefs, setPref }: { prefs: ProfileDisplayPrefs;
   const count = useLiveIntegrationCount();
   return (
     <section className="mt-5 border-t border-border pt-4">
-      <button
+      <Button variant="outline"
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
@@ -79,7 +80,7 @@ function LiveIntegrationsPanel({ prefs, setPref }: { prefs: ProfileDisplayPrefs;
       >
         <span>{t("studio.live.count", { count })}</span>
         <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
-      </button>
+      </Button>
       {open && <div className="mt-3 space-y-3">
         {([['steamPresence', 'studio.effects.steam', 'studio.effects.steamHelp'], ['lastfmPresence', 'studio.effects.lastfm', 'studio.effects.lastfmHelp']] as const).map(([key, title, help]) => (
           <div key={key} className="flex items-start justify-between gap-4 rounded-xl border border-border p-3">
